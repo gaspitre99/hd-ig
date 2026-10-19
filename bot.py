@@ -4,9 +4,15 @@ import textwrap
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-IG_USER_ID = os.environ["IG_USER_ID"]
-IG_ACCESS_TOKEN = os.environ["IG_ACCESS_TOKEN"]
-IMGBB_API_KEY = os.environ["IMGBB_API_KEY"]
+def limpiar_secreto(val: str) -> str:
+    s = val.strip().strip("\"'").strip()
+    if s.lower().startswith("bearer "):
+        s = s[7:].strip()
+    return s
+
+IG_USER_ID = limpiar_secreto(os.environ["IG_USER_ID"])
+IG_ACCESS_TOKEN = limpiar_secreto(os.environ["IG_ACCESS_TOKEN"])
+IMGBB_API_KEY = limpiar_secreto(os.environ["IMGBB_API_KEY"])
 
 def crear_placa_grafica(fecha, titular, dato_clave, output_path="post_actual.jpg"):
     ancho, alto = 1080, 1350
