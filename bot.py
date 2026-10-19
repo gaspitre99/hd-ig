@@ -11,46 +11,139 @@ def limpiar_secreto(val: str) -> str:
         s = s[7:].strip()
     return s
 
-IG_USER_ID = limpiar_secreto(os.environ["IG_USER_ID"])
-IG_ACCESS_TOKEN = limpiar_secreto(os.environ["IG_ACCESS_TOKEN"])
-IMGBB_API_KEY = limpiar_secreto(os.environ["IMGBB_API_KEY"])
+IG_USER_ID = limpiar_secreto(os.environ.get("IG_USER_ID", ""))
+IG_ACCESS_TOKEN = limpiar_secreto(os.environ.get("IG_ACCESS_TOKEN", ""))
+IMGBB_API_KEY = limpiar_secreto(os.environ.get("IMGBB_API_KEY", ""))
 
-def crear_placa_grafica(fecha, titular, dato_clave, output_path="post_actual.jpg"):
+def obtener_fuente(tipo="sans", tamano=40):
+    rutas_linux = {
+        "sans_bold": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+        "serif_bold": "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf",
+        "sans": "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    }
+    rutas_windows = {
+        "sans_bold": "C:/Windows/Fonts/arialbd.ttf",
+        "serif_bold": "C:/Windows/Fonts/georgiab.ttf",
+        "sans": "C:/Windows/Fonts/arial.ttf"
+    }
+    for ruta in [rutas_linux.get(tipo), rutas_windows.get(tipo)]:
+        if ruta and os.path.exists(ruta):
+            try:
+                return ImageFont.truetype(ruta, tamano)
+            except IOError:
+                pass
+    return ImageFont.load_default()
+
+def crear_placas_carrusel(fecha, titular, dato_clave):
     ancho, alto = 1080, 1350
     fondo_color = (18, 22, 28)
     acento_color = (212, 175, 55)
     texto_blanco = (245, 245, 245)
+    gris_claro = (200, 205, 215)
+    gris_tenue = (120, 125, 135)
 
-    img = Image.new("RGB", (ancho, alto), color=fondo_color)
-    draw = ImageDraw.Draw(img)
+    font_fecha = obtener_fuente("sans_bold", 34)
+    font_titular = obtener_fuente("serif_bold", 62)
+    font_dato = obtener_fuente("sans", 40)
+    font_dato_grande = obtener_fuente("sans", 44)
+    font_sub = obtener_fuente("sans_bold", 28)
 
-    try:
-        font_fecha = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 34)
-        font_titular = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf", 64)
-        font_dato = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 40)
-    except IOError:
-        font_fecha = font_titular = font_dato = ImageFont.load_default()
+    rutas_salida = []
 
-    draw.rectangle([(90, 120), (240, 128)], fill=acento_color)
-    draw.text((90, 155), fecha.upper(), font=font_fecha, fill=acento_color)
+    # ==========================
+    # SLIDE 1: PORTADA
+    # ==========================
+    img1 = Image.new("RGB", (ancho, alto), color=fondo_color)
+    draw1 = ImageDraw.Draw(img1)
 
-    y_text = 260
-    for linea in textwrap.wrap(titular, width=22):
-        draw.text((90, y_text), linea, font=font_titular, fill=texto_blanco)
+    draw1.rectangle([(90, 120), (250, 128)], fill=acento_color)
+    draw1.text((90, 155), fecha.upper(), font=font_fecha, fill=acento_color)
+
+    y_text = 270
+    for linea in textwrap.wrap(titular, width=21):
+        draw1.text((90, y_text), linea, font=font_titular, fill=texto_blanco)
         y_text += 82
 
-    y_text += 50
-    draw.line([(90, y_text), (990, y_text)], fill=(70, 75, 85), width=2)
-    y_text += 60
+    y_text += 45
+    draw1.line([(90, y_text), (990, y_text)], fill=(70, 75, 85), width=2)
+    y_text += 55
 
-    for linea in textwrap.wrap(dato_clave, width=36):
-        draw.text((90, y_text), linea, font=font_dato, fill=(200, 205, 215))
-        y_text += 58
+    draw1.text((90, y_text), "ARCHIVO DE HISTORIA ECONÓMICA ARGENTINA", font=font_sub, fill=acento_color)
 
-    draw.text((90, 1230), "ARCHIVO DE HISTORIA ECONÓMICA ARGENTINA", font=font_fecha, fill=(120, 125, 135))
+    draw1.rectangle([(90, 1190), (990, 1260)], fill=(24, 29, 37))
+    draw1.text((120, 1212), "DESLIZÁ PARA CONOCER EL DATO CLAVE ➔", font=font_sub, fill=gris_claro)
 
-    img.save(output_path, quality=95)
-    return output_path
+    ruta_s1 = "slide_1_portada.jpg"
+    img1.save(ruta_s1, quality=95)
+    rutas_salida.append(ruta_s1)
+
+    # ==========================
+    # SLIDE 2: EL DATO CLAVE
+    # ==========================
+    img2 = Image.new("RGB", (ancho, alto), color=fondo_color)
+    draw2 = ImageDraw.Draw(img2)
+
+    draw2.rectangle([(90, 120), (250, 128)], fill=acento_color)
+    draw2.text((90, 155), "EL DATO CLAVE", font=font_fecha, fill=acento_color)
+    draw2.text((90, 215), fecha.upper(), font=font_sub, fill=gris_tenue)
+
+    # Caja destacada para el dato clave
+    box_y = 300
+    box_h = 680
+    draw2.rectangle([(90, box_y), (990, box_y + box_h)], fill=(26, 33, 42), outline=(60, 66, 78), width=2)
+    draw2.rectangle([(90, box_y), (105, box_y + box_h)], fill=acento_color)
+
+    y_dato = box_y + 80
+    for linea in textwrap.wrap(dato_clave, width=28):
+        draw2.text((140, y_dato), linea, font=font_dato_grande, fill=texto_blanco)
+        y_dato += 68
+
+    draw2.text((90, 1080), "HABLEMOS DE ECONOMÍA", font=font_sub, fill=gris_tenue)
+
+    draw2.rectangle([(90, 1190), (990, 1260)], fill=(24, 29, 37))
+    draw2.text((120, 1212), "DESLIZÁ PARA EL ANÁLISIS COMPLETO ➔", font=font_sub, fill=gris_claro)
+
+    ruta_s2 = "slide_2_dato.jpg"
+    img2.save(ruta_s2, quality=95)
+    rutas_salida.append(ruta_s2)
+
+    # ==========================
+    # SLIDE 3: CIERRE / YOUTUBE CTA
+    # ==========================
+    img3 = Image.new("RGB", (ancho, alto), color=fondo_color)
+    draw3 = ImageDraw.Draw(img3)
+
+    draw3.rectangle([(90, 120), (250, 128)], fill=acento_color)
+    draw3.text((90, 155), "¿CONOCÍAS ESTE CASO?", font=font_fecha, fill=acento_color)
+
+    draw3.text((90, 240), "¿Qué opinás de esta medida?", font=font_titular, fill=texto_blanco)
+    draw3.text((90, 340), "Dejá tu comentario abajo. Leemos y debatimos todos.", font=font_dato, fill=gris_claro)
+
+    # Tarjeta de YouTube
+    yt_y = 470
+    yt_h = 560
+    draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=(26, 33, 42), outline=acento_color, width=2)
+
+    draw3.text((140, yt_y + 60), "CANAL DE YOUTUBE", font=font_sub, fill=acento_color)
+    draw3.text((140, yt_y + 120), "@hablemosdeeco", font=font_titular, fill=texto_blanco)
+
+    y_desc = yt_y + 240
+    desc_texto = "Documentales completos, gráficos interactivos y análisis semanal de historia económica argentina."
+    for linea in textwrap.wrap(desc_texto, width=32):
+        draw3.text((140, y_desc), linea, font=font_dato, fill=gris_claro)
+        y_desc += 55
+
+    # Botón simulación
+    draw3.rectangle([(140, yt_y + 430), (620, yt_y + 495)], fill=acento_color)
+    draw3.text((165, yt_y + 448), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=(18, 22, 28))
+
+    draw3.text((90, 1212), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
+
+    ruta_s3 = "slide_3_cierre.jpg"
+    img3.save(ruta_s3, quality=95)
+    rutas_salida.append(ruta_s3)
+
+    return rutas_salida
 
 def subir_imagen_temporal(ruta_imagen):
     with open(ruta_imagen, "rb") as file:
@@ -64,41 +157,68 @@ def subir_imagen_temporal(ruta_imagen):
         raise Exception(f"Error subiendo a ImgBB: {res}")
     return res["data"]["url"]
 
-def publicar_en_instagram(image_url, caption):
+def publicar_carrusel_en_instagram(rutas_imagenes, caption):
     token = IG_ACCESS_TOKEN.strip()
     user_id = IG_USER_ID.strip()
-    
-    # Detectar automáticamente si el token es de Instagram Login (IG...) o Facebook Login (EAA...)
+
     host = "graph.instagram.com" if token.startswith("IG") else "graph.facebook.com"
     base_url = f"https://{host}/v21.0/{user_id}"
-    
-    res_container = requests.post(
+
+    # 1. Subir cada imagen y crear cada item del carrusel
+    item_ids = []
+    print(f"Subiendo {len(rutas_imagenes)} placas para el carrusel...")
+    for idx, ruta in enumerate(rutas_imagenes, 1):
+        url_img = subir_imagen_temporal(ruta)
+        res_item = requests.post(
+            f"{base_url}/media",
+            data={
+                "image_url": url_img,
+                "is_carousel_item": "true",
+                "access_token": token
+            }
+        ).json()
+
+        if "id" not in res_item:
+            raise Exception(f"Error al crear item {idx} del carrusel en {host}: {res_item}")
+
+        item_ids.append(res_item["id"])
+        print(f"Item {idx}/{len(rutas_imagenes)} creado con ID: {res_item['id']}")
+
+    # Esperar 6 segundos para que Meta termine de procesar las imágenes individuales
+    time.sleep(6)
+
+    # 2. Crear el contenedor padre de tipo CAROUSEL
+    print("Creando contenedor padre de carrusel...")
+    res_carousel = requests.post(
         f"{base_url}/media",
         data={
-            "image_url": image_url,
+            "media_type": "CAROUSEL",
+            "children": ",".join(item_ids),
             "caption": caption,
             "access_token": token
         }
     ).json()
 
-    if "id" not in res_container:
-        raise Exception(f"Error al crear contenedor en {host}: {res_container}")
+    if "id" not in res_carousel:
+        raise Exception(f"Error al crear contenedor de carrusel en {host}: {res_carousel}")
 
-    creation_id = res_container["id"]
-    
-    # Esperar 5 segundos a que Instagram procese el contenedor de imagen
-    time.sleep(5)
+    carousel_id = res_carousel["id"]
 
+    # Esperar 8 segundos para que el carrusel esté listo para publicar
+    time.sleep(8)
+
+    # 3. Publicar el carrusel
+    print("Publicando carrusel en el feed...")
     res_publish = requests.post(
         f"{base_url}/media_publish",
         data={
-            "creation_id": creation_id,
+            "creation_id": carousel_id,
             "access_token": token
         }
     ).json()
 
     if "id" not in res_publish:
-        raise Exception(f"Error al publicar en {host}: {res_publish}")
+        raise Exception(f"Error al publicar carrusel en {host}: {res_publish}")
 
     return res_publish["id"]
 
@@ -111,15 +231,15 @@ def main():
         print("No hay publicaciones pendientes en datos.json.")
         return
 
-    ruta_img = crear_placa_grafica(
+    print(f"Generando carrusel para el post #{post_pendiente.get('id')}: {post_pendiente.get('titular')}...")
+    rutas_placas = crear_placas_carrusel(
         post_pendiente["fecha_historica"],
         post_pendiente["titular"],
         post_pendiente["dato_clave"]
     )
 
-    url_publica = subir_imagen_temporal(ruta_img)
-    ig_post_id = publicar_en_instagram(url_publica, post_pendiente["caption"])
-    print(f"¡Publicado exitosamente en Instagram! ID: {ig_post_id}")
+    ig_post_id = publicar_carrusel_en_instagram(rutas_placas, post_pendiente["caption"])
+    print(f"¡Carrusel publicado exitosamente en Instagram! ID: {ig_post_id}")
 
     post_pendiente["publicado"] = True
     with open("datos.json", "w", encoding="utf-8") as f:
