@@ -1,6 +1,7 @@
 import json
 import os
 import textwrap
+import time
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -64,32 +65,40 @@ def subir_imagen_temporal(ruta_imagen):
     return res["data"]["url"]
 
 def publicar_en_instagram(image_url, caption):
-    base_url = f"https://graph.facebook.com/v21.0/{IG_USER_ID}"
+    token = IG_ACCESS_TOKEN.strip()
+    user_id = IG_USER_ID.strip()
+    
+    # Detectar automáticamente si el token es de Instagram Login (IG...) o Facebook Login (EAA...)
+    host = "graph.instagram.com" if token.startswith("IG") else "graph.facebook.com"
+    base_url = f"https://{host}/v21.0/{user_id}"
     
     res_container = requests.post(
         f"{base_url}/media",
         data={
             "image_url": image_url,
             "caption": caption,
-            "access_token": IG_ACCESS_TOKEN
+            "access_token": token
         }
     ).json()
 
     if "id" not in res_container:
-        raise Exception(f"Error al crear contenedor: {res_container}")
+        raise Exception(f"Error al crear contenedor en {host}: {res_container}")
 
     creation_id = res_container["id"]
+    
+    # Esperar 5 segundos a que Instagram procese el contenedor de imagen
+    time.sleep(5)
 
     res_publish = requests.post(
         f"{base_url}/media_publish",
         data={
             "creation_id": creation_id,
-            "access_token": IG_ACCESS_TOKEN
+            "access_token": token
         }
     ).json()
 
     if "id" not in res_publish:
-        raise Exception(f"Error al publicar: {res_publish}")
+        raise Exception(f"Error al publicar en {host}: {res_publish}")
 
     return res_publish["id"]
 
