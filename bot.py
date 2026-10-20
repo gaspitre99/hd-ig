@@ -287,7 +287,7 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
         )
 
         encabezado = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n"
-        cierre = f"\n\n📺 Más archivo en YouTube:\nhttps://youtube.com/@hablemosdeeco\n\n#HistoriaEconomica #Argentina"
+        cierre = "\n\n#HistoriaEconomica #Argentina"
 
         limite = 280
         espacio_dato = limite - len(encabezado) - len(cierre)
