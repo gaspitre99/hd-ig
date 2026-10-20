@@ -2,6 +2,8 @@ import json
 import os
 import textwrap
 import time
+import csv
+from datetime import datetime, timezone, timedelta
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
@@ -68,6 +70,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw1.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
     draw1.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
+    # Indicador de progreso (1/3)
+    draw1.text((940, 88), "1/3", font=font_sub, fill=gris_tenue)
+
     # Tag de categoría y fecha
     draw1.text((90, 190), f"HISTORIA MONETARIA  •  {fecha.upper()}", font=font_tag, fill=celeste_brand)
 
@@ -100,6 +105,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw2.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
     draw2.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
+    # Indicador de progreso (2/3)
+    draw2.text((940, 88), "2/3", font=font_sub, fill=gris_tenue)
+
     draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=celeste_brand)
 
     # Caja destacada para el dato clave
@@ -131,6 +139,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     # Identidad editorial superior
     draw3.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
     draw3.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+
+    # Indicador de progreso (3/3)
+    draw3.text((940, 88), "3/3", font=font_sub, fill=gris_tenue)
 
     draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=celeste_brand)
 
@@ -183,6 +194,27 @@ def subir_imagen_temporal(ruta_imagen):
         raise Exception(f"Error subiendo a ImgBB: {res}")
     return res["data"]["url"]
 
+def esperar_procesamiento_meta(container_id, token, host, max_intentos=8, espera_segundos=3):
+    """Consulta el estado del contenedor en Meta hasta que esté FINISHED o falle."""
+    url = f"https://{host}/v21.0/{container_id}"
+    params = {"fields": "status_code", "access_token": token}
+    for intento in range(1, max_intentos + 1):
+        try:
+            res = requests.get(url, params=params).json()
+            status = res.get("status_code", "")
+            if status == "FINISHED":
+                print(f"Contenedor {container_id} listo para publicar (FINISHED).")
+                return True
+            elif status == "ERROR":
+                raise Exception(f"Meta reportó ERROR procesando contenedor {container_id}: {res}")
+            print(f"Procesando en Meta... Intento {intento}/{max_intentos} (Estado: {status or 'EN PROCESO'})")
+        except Exception as e:
+            if "ERROR" in str(e):
+                raise e
+            print(f"Aviso en polling {intento}: {e}")
+        time.sleep(espera_segundos)
+    return True
+
 def publicar_carrusel_en_instagram(rutas_imagenes, caption):
     token = IG_ACCESS_TOKEN.strip()
     user_id = IG_USER_ID.strip()
@@ -210,7 +242,7 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
         item_ids.append(res_item["id"])
         print(f"Item {idx}/{len(rutas_imagenes)} creado con ID: {res_item['id']}")
 
-    time.sleep(6)
+    time.sleep(4)
 
     # 2. Crear el contenedor padre de tipo CAROUSEL
     print("Creando contenedor padre de carrusel...")
@@ -228,7 +260,9 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
         raise Exception(f"Error al crear contenedor de carrusel en {host}: {res_carousel}")
 
     carousel_id = res_carousel["id"]
-    time.sleep(8)
+
+    # Polling dinámico en Meta para verificar estado antes de publicar
+    esperar_procesamiento_meta(carousel_id, token, host)
 
     # 3. Publicar el carrusel
     print("Publicando carrusel en el feed...")
@@ -285,11 +319,50 @@ def publicar_en_x(fecha, titular, dato_clave):
         print(f"Advertencia al publicar en X: {e}")
         return None
 
+def seleccionar_post_a_publicar(posts):
+    """Prioriza coincidencia por efeméride del día (UTC-3 Argentina); si no hay, usa fallback secuencial."""
+    tz_ar = timezone(timedelta(hours=-3))
+    ahora_ar = datetime.now(tz_ar)
+
+    meses_es = [
+        "enero", "febrero", "marzo", "abril", "mayo", "junio",
+        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
+    ]
+    dia_str = str(ahora_ar.day)
+    mes_str = meses_es[ahora_ar.month - 1]
+    patron_hoy = f"{dia_str} de {mes_str}".lower()
+
+    # 1. Coincidencia por efeméride exacta de hoy
+    for p in posts:
+        if not p.get("publicado"):
+            fecha_post = p.get("fecha_historica", "").lower()
+            if patron_hoy in fecha_post:
+                print(f"¡Efeméride del día encontrada! Coincide con '{patron_hoy}': Post #{p.get('id')}")
+                return p
+
+    # 2. Fallback secuencial
+    return next((p for p in posts if not p.get("publicado")), None)
+
+def actualizar_csv_control(posts, ruta_csv="control_publicaciones.csv"):
+    """Regenera la planilla de control de auditoría para Excel tras cada ejecución."""
+    with open(ruta_csv, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f, delimiter=";")
+        writer.writerow(["ID", "ESTADO", "FECHA HISTÓRICA", "TITULAR", "DATO CLAVE", "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"])
+        for p in posts:
+            fecha = p.get("fecha_historica", "")
+            titular = p.get("titular", "")
+            dato = p.get("dato_clave", "")
+            caption_ig = p.get("caption", "")
+            texto_x = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n{dato}\n\n#HistoriaEconomica #Argentina"
+            estado = "PUBLICADO" if p.get("publicado") else "PENDIENTE"
+            writer.writerow([p.get("id"), estado, fecha, titular, dato, caption_ig, texto_x])
+    print(f"Planilla de control ({ruta_csv}) sincronizada automáticamente.")
+
 def main():
     with open("datos.json", "r", encoding="utf-8") as f:
         posts = json.load(f)
 
-    post_pendiente = next((p for p in posts if not p.get("publicado")), None)
+    post_pendiente = seleccionar_post_a_publicar(posts)
     if not post_pendiente:
         print("No hay publicaciones pendientes en datos.json.")
         return
@@ -320,6 +393,8 @@ def main():
     post_pendiente["publicado"] = True
     with open("datos.json", "w", encoding="utf-8") as f:
         json.dump(posts, f, ensure_ascii=False, indent=2)
+
+    actualizar_csv_control(posts)
 
 if __name__ == "__main__":
     main()

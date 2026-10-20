@@ -34,10 +34,10 @@ jobs:
           X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
         run: python bot.py
 
-      - name: Guardar estado en datos.json
+      - name: Guardar estado en datos.json y CSV
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add datos.json
-          git diff --staged --quiet || git commit -m "Post publicado automaticamente"
+          git add datos.json control_publicaciones.csv
+          git diff --staged --quiet || git commit -m "Post publicado automaticamente y planilla actualizada"
           git push
