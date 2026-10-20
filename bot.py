@@ -41,17 +41,21 @@ def obtener_fuente(tipo="sans", tamano=40):
 
 def crear_placas_carrusel(fecha, titular, dato_clave):
     ancho, alto = 1080, 1350
-    fondo_color = (18, 22, 28)
-    acento_color = (212, 175, 55)
-    texto_blanco = (245, 245, 245)
-    gris_claro = (200, 205, 215)
-    gris_tenue = (120, 125, 135)
+    fondo_color = (12, 14, 18)        # Negro grafito editorial idéntico a la web
+    celeste_brand = (14, 165, 233)     # Cyan / Celeste característico de HDE
+    blanco = (255, 255, 255)           # Blanco puro
+    gris_sub = (203, 213, 225)         # Gris slate para textos secundarios
+    gris_card = (20, 24, 32)           # Fondo elevado de tarjetas
+    borde_card = (45, 55, 72)          # Borde sutil
+    gris_tenue = (120, 130, 145)
 
-    font_fecha = obtener_fuente("sans_bold", 34)
-    font_titular = obtener_fuente("serif_bold", 62)
-    font_dato = obtener_fuente("sans", 40)
-    font_dato_grande = obtener_fuente("sans", 44)
-    font_sub = obtener_fuente("sans_bold", 28)
+    font_hde = obtener_fuente("sans_bold", 19)
+    font_brand = obtener_fuente("sans_bold", 22)
+    font_tag = obtener_fuente("sans_bold", 26)
+    font_titular = obtener_fuente("serif_bold", 54)
+    font_dato = obtener_fuente("sans", 36)
+    font_dato_grande = obtener_fuente("sans", 42)
+    font_sub = obtener_fuente("sans_bold", 24)
 
     rutas_salida = []
 
@@ -61,22 +65,28 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     img1 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw1 = ImageDraw.Draw(img1)
 
-    draw1.rectangle([(90, 120), (250, 128)], fill=acento_color)
-    draw1.text((90, 155), fecha.upper(), font=font_fecha, fill=acento_color)
+    # Logo e identidad HDE superior
+    draw1.ellipse([(90, 80), (145, 135)], fill=blanco)
+    draw1.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw1.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+
+    # Tag de categoría y fecha
+    draw1.text((90, 190), f"HISTORIA MONETARIA  •  {fecha.upper()}", font=font_tag, fill=celeste_brand)
 
     y_text = 270
     for linea in textwrap.wrap(titular, width=21):
-        draw1.text((90, y_text), linea, font=font_titular, fill=texto_blanco)
-        y_text += 82
+        draw1.text((90, y_text), linea, font=font_titular, fill=blanco)
+        y_text += 74
 
-    y_text += 45
-    draw1.line([(90, y_text), (990, y_text)], fill=(70, 75, 85), width=2)
-    y_text += 55
+    y_text += 40
+    draw1.line([(90, y_text), (990, y_text)], fill=borde_card, width=2)
+    y_text += 50
 
-    draw1.text((90, y_text), "ARCHIVO DE HISTORIA ECONÓMICA ARGENTINA", font=font_sub, fill=acento_color)
+    draw1.text((90, y_text), "ARCHIVO & ANÁLISIS MACROECONÓMICO", font=font_tag, fill=celeste_brand)
 
-    draw1.rectangle([(90, 1190), (990, 1260)], fill=(24, 29, 37))
-    draw1.text((120, 1212), "DESLIZÁ PARA CONOCER EL DATO CLAVE ➔", font=font_sub, fill=gris_claro)
+    # Footer
+    draw1.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
+    draw1.text((120, 1222), "DESLIZÁ PARA CONOCER EL DATO CLAVE ➔", font=font_sub, fill=celeste_brand)
 
     ruta_s1 = "slide_1_portada.jpg"
     img1.save(ruta_s1, quality=95)
@@ -88,25 +98,28 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     img2 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw2 = ImageDraw.Draw(img2)
 
-    draw2.rectangle([(90, 120), (250, 128)], fill=acento_color)
-    draw2.text((90, 155), "EL DATO CLAVE", font=font_fecha, fill=acento_color)
-    draw2.text((90, 215), fecha.upper(), font=font_sub, fill=gris_tenue)
+    # Logo superior
+    draw2.ellipse([(90, 80), (145, 135)], fill=blanco)
+    draw2.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw2.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+
+    draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=celeste_brand)
 
     # Caja destacada para el dato clave
-    box_y = 300
-    box_h = 680
-    draw2.rectangle([(90, box_y), (990, box_y + box_h)], fill=(26, 33, 42), outline=(60, 66, 78), width=2)
-    draw2.rectangle([(90, box_y), (105, box_y + box_h)], fill=acento_color)
+    box_y = 270
+    box_h = 720
+    draw2.rectangle([(90, box_y), (990, box_y + box_h)], fill=gris_card, outline=borde_card, width=2)
+    draw2.rectangle([(90, box_y), (105, box_y + box_h)], fill=celeste_brand)
 
     y_dato = box_y + 80
-    for linea in textwrap.wrap(dato_clave, width=28):
-        draw2.text((140, y_dato), linea, font=font_dato_grande, fill=texto_blanco)
-        y_dato += 68
+    for linea in textwrap.wrap(dato_clave, width=27):
+        draw2.text((140, y_dato), linea, font=font_dato_grande, fill=blanco)
+        y_dato += 66
 
-    draw2.text((90, 1080), "HABLEMOS DE ECONOMÍA", font=font_sub, fill=gris_tenue)
+    draw2.text((90, 1100), f"EFEMÉRIDE: {fecha.upper()}", font=font_sub, fill=gris_tenue)
 
-    draw2.rectangle([(90, 1190), (990, 1260)], fill=(24, 29, 37))
-    draw2.text((120, 1212), "DESLIZÁ PARA EL ANÁLISIS COMPLETO ➔", font=font_sub, fill=gris_claro)
+    draw2.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
+    draw2.text((120, 1222), "DESLIZÁ PARA EL ANÁLISIS COMPLETO ➔", font=font_sub, fill=celeste_brand)
 
     ruta_s2 = "slide_2_dato.jpg"
     img2.save(ruta_s2, quality=95)
@@ -118,31 +131,43 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     img3 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw3 = ImageDraw.Draw(img3)
 
-    draw3.rectangle([(90, 120), (250, 128)], fill=acento_color)
-    draw3.text((90, 155), "¿CONOCÍAS ESTE CASO?", font=font_fecha, fill=acento_color)
+    # Logo superior
+    draw3.ellipse([(90, 80), (145, 135)], fill=blanco)
+    draw3.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw3.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
-    draw3.text((90, 240), "¿Qué opinás de esta medida?", font=font_titular, fill=texto_blanco)
-    draw3.text((90, 340), "Dejá tu comentario abajo. Leemos y debatimos todos.", font=font_dato, fill=gris_claro)
+    draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=celeste_brand)
+
+    y_preg = 260
+    for linea in textwrap.wrap("¿Qué opinás de esta medida?", width=20):
+        draw3.text((90, y_preg), linea, font=font_titular, fill=blanco)
+        y_preg += 68
+
+    y_coment = y_preg + 20
+    for linea in textwrap.wrap("Dejá tu comentario abajo. Leemos y debatimos todos los puntos de vista.", width=32):
+        draw3.text((90, y_coment), linea, font=font_dato, fill=gris_sub)
+        y_coment += 50
 
     # Tarjeta de YouTube
-    yt_y = 470
-    yt_h = 560
-    draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=(26, 33, 42), outline=acento_color, width=2)
+    yt_y = y_coment + 40
+    yt_h = 470
+    draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=gris_card, outline=celeste_brand, width=2)
 
-    draw3.text((140, yt_y + 60), "CANAL DE YOUTUBE", font=font_sub, fill=acento_color)
-    draw3.text((140, yt_y + 120), "@hablemosdeeco", font=font_titular, fill=texto_blanco)
+    draw3.text((130, yt_y + 45), "CANAL OFICIAL DE YOUTUBE", font=font_tag, fill=celeste_brand)
+    draw3.text((130, yt_y + 100), "@hablemosdeeco", font=font_titular, fill=blanco)
 
-    y_desc = yt_y + 240
+    y_desc = yt_y + 195
     desc_texto = "Documentales completos, gráficos interactivos y análisis semanal de historia económica argentina."
     for linea in textwrap.wrap(desc_texto, width=32):
-        draw3.text((140, y_desc), linea, font=font_dato, fill=gris_claro)
-        y_desc += 55
+        draw3.text((130, y_desc), linea, font=font_dato, fill=gris_sub)
+        y_desc += 50
 
     # Botón simulación
-    draw3.rectangle([(140, yt_y + 430), (620, yt_y + 495)], fill=acento_color)
-    draw3.text((165, yt_y + 448), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=(18, 22, 28))
+    draw3.rectangle([(130, yt_y + 360), (620, yt_y + 425)], fill=celeste_brand)
+    draw3.text((155, yt_y + 380), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=fondo_color)
 
-    draw3.text((90, 1212), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
+    draw3.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
+    draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
 
     ruta_s3 = "slide_3_cierre.jpg"
     img3.save(ruta_s3, quality=95)
