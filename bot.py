@@ -239,16 +239,20 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
         return None
 
     try:
-        print("Autenticando y subiendo imágenes a X (Twitter)...")
-        auth = tweepy.OAuth1UserHandler(
-            X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
-        )
-        api_v1 = tweepy.API(auth)
-
+        print("Intentando autenticar y subir imágenes a X (Twitter)...")
         media_ids = []
-        for ruta in rutas_imagenes:
-            media = api_v1.media_upload(ruta)
-            media_ids.append(media.media_id)
+        try:
+            auth = tweepy.OAuth1UserHandler(
+                X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
+            )
+            api_v1 = tweepy.API(auth)
+            for ruta in rutas_imagenes:
+                media = api_v1.media_upload(ruta)
+                media_ids.append(media.media_id)
+        except Exception as e_media:
+            print(f"Aviso: La subida de imágenes en X no está habilitada en tu nivel de cuenta ({e_media}).")
+            print("Se procederá a publicar el tweet en formato texto con enlace a YouTube.")
+            media_ids = None
 
         client_v2 = tweepy.Client(
             consumer_key=X_API_KEY,
@@ -258,7 +262,7 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
         )
 
         encabezado = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n"
-        cierre = f"\n\n📺 Más archivo en YouTube: youtube.com/@hablemosdeeco\n#HistoriaEconomica #Argentina"
+        cierre = f"\n\n📺 Más archivo en YouTube:\nhttps://youtube.com/@hablemosdeeco\n\n#HistoriaEconomica #Argentina"
 
         limite = 280
         espacio_dato = limite - len(encabezado) - len(cierre)
@@ -269,7 +273,11 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
 
         texto_tweet = encabezado + dato_texto + cierre
 
-        res = client_v2.create_tweet(text=texto_tweet, media_ids=media_ids)
+        if media_ids:
+            res = client_v2.create_tweet(text=texto_tweet, media_ids=media_ids)
+        else:
+            res = client_v2.create_tweet(text=texto_tweet)
+
         tweet_id = res.data["id"]
         print(f"¡Publicado exitosamente en X! Tweet ID: {tweet_id}")
         return tweet_id
