@@ -39,6 +39,31 @@ def obtener_fuente(tipo="sans", tamano=40):
                 pass
     return ImageFont.load_default()
 
+def obtener_logo_circular(tamano=(60, 60)):
+    ruta_logo = "assets/logo.jpg"
+    if not os.path.exists(ruta_logo):
+        return None
+    try:
+        logo = Image.open(ruta_logo).convert("RGBA")
+        centro_x = (130 + 493) // 2
+        centro_y = (129 + 463) // 2
+        radio = max(493 - 130, 463 - 129) // 2 + 10
+        logo_cropped = logo.crop((centro_x - radio, centro_y - radio, centro_x + radio, centro_y + radio))
+        logo_resized = logo_cropped.resize(tamano, Image.Resampling.LANCZOS)
+
+        mask = Image.new("L", tamano, 0)
+        dmask = ImageDraw.Draw(mask)
+        dmask.ellipse((0, 0, tamano[0], tamano[1]), fill=255)
+
+        circular = Image.new("RGBA", tamano, (0, 0, 0, 0))
+        circular.paste(logo_resized, (0, 0), mask=mask)
+
+        dborder = ImageDraw.Draw(circular)
+        dborder.ellipse((0, 0, tamano[0] - 1, tamano[1] - 1), outline=(255, 255, 255, 220), width=2)
+        return circular
+    except Exception:
+        return None
+
 def crear_placas_carrusel(fecha, titular, dato_clave):
     ancho, alto = 1080, 1350
     fondo_color = (12, 14, 18)        # Negro grafito editorial idéntico a la web
@@ -59,6 +84,8 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
 
     rutas_salida = []
 
+    logo_circ = obtener_logo_circular((60, 60))
+
     # ==========================
     # SLIDE 1: PORTADA
     # ==========================
@@ -66,9 +93,12 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw1 = ImageDraw.Draw(img1)
 
     # Logo e identidad HDE superior
-    draw1.ellipse([(90, 80), (145, 135)], fill=blanco)
-    draw1.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw1.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    if logo_circ:
+        img1.paste(logo_circ, (90, 75), mask=logo_circ)
+    else:
+        draw1.ellipse([(90, 80), (145, 135)], fill=blanco)
+        draw1.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw1.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     # Tag de categoría y fecha
     draw1.text((90, 190), f"HISTORIA MONETARIA  •  {fecha.upper()}", font=font_tag, fill=celeste_brand)
@@ -99,9 +129,12 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw2 = ImageDraw.Draw(img2)
 
     # Logo superior
-    draw2.ellipse([(90, 80), (145, 135)], fill=blanco)
-    draw2.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw2.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    if logo_circ:
+        img2.paste(logo_circ, (90, 75), mask=logo_circ)
+    else:
+        draw2.ellipse([(90, 80), (145, 135)], fill=blanco)
+        draw2.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw2.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=celeste_brand)
 
@@ -132,9 +165,12 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3 = ImageDraw.Draw(img3)
 
     # Logo superior
-    draw3.ellipse([(90, 80), (145, 135)], fill=blanco)
-    draw3.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw3.text((160, 98), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    if logo_circ:
+        img3.paste(logo_circ, (90, 75), mask=logo_circ)
+    else:
+        draw3.ellipse([(90, 80), (145, 135)], fill=blanco)
+        draw3.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
+    draw3.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=celeste_brand)
 
@@ -154,7 +190,13 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=gris_card, outline=celeste_brand, width=2)
 
     draw3.text((130, yt_y + 45), "CANAL OFICIAL DE YOUTUBE", font=font_tag, fill=celeste_brand)
-    draw3.text((130, yt_y + 100), "@hablemosdeeco", font=font_titular, fill=blanco)
+
+    logo_yt = obtener_logo_circular((68, 68))
+    if logo_yt:
+        img3.paste(logo_yt, (130, yt_y + 90), mask=logo_yt)
+        draw3.text((215, yt_y + 105), "@hablemosdeeco", font=font_titular, fill=blanco)
+    else:
+        draw3.text((130, yt_y + 100), "@hablemosdeeco", font=font_titular, fill=blanco)
 
     y_desc = yt_y + 195
     desc_texto = "Documentales completos, gráficos interactivos y análisis semanal de historia económica argentina."

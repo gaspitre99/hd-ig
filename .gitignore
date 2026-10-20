@@ -1,4 +1,5 @@
 __pycache__/
 *.pyc
-*.jpg
-*.png
+slide_*.jpg
+test_*.jpg
+brand_test_*.jpg
