@@ -15,6 +15,11 @@ IG_USER_ID = limpiar_secreto(os.environ.get("IG_USER_ID", ""))
 IG_ACCESS_TOKEN = limpiar_secreto(os.environ.get("IG_ACCESS_TOKEN", ""))
 IMGBB_API_KEY = limpiar_secreto(os.environ.get("IMGBB_API_KEY", ""))
 
+X_API_KEY = limpiar_secreto(os.environ.get("X_API_KEY", ""))
+X_API_SECRET = limpiar_secreto(os.environ.get("X_API_SECRET", ""))
+X_ACCESS_TOKEN = limpiar_secreto(os.environ.get("X_ACCESS_TOKEN", ""))
+X_ACCESS_SECRET = limpiar_secreto(os.environ.get("X_ACCESS_SECRET", ""))
+
 def obtener_fuente(tipo="sans", tamano=40):
     rutas_linux = {
         "sans_bold": "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
@@ -222,6 +227,56 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
 
     return res_publish["id"]
 
+def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
+    if not (X_API_KEY and X_API_SECRET and X_ACCESS_TOKEN and X_ACCESS_SECRET):
+        print("Credenciales de X no detectadas. Se saltea la publicación en X.")
+        return None
+
+    try:
+        import tweepy
+    except ImportError:
+        print("Tweepy no está instalado. Se saltea la publicación en X.")
+        return None
+
+    try:
+        print("Autenticando y subiendo imágenes a X (Twitter)...")
+        auth = tweepy.OAuth1UserHandler(
+            X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
+        )
+        api_v1 = tweepy.API(auth)
+
+        media_ids = []
+        for ruta in rutas_imagenes:
+            media = api_v1.media_upload(ruta)
+            media_ids.append(media.media_id)
+
+        client_v2 = tweepy.Client(
+            consumer_key=X_API_KEY,
+            consumer_secret=X_API_SECRET,
+            access_token=X_ACCESS_TOKEN,
+            access_token_secret=X_ACCESS_SECRET
+        )
+
+        encabezado = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n"
+        cierre = f"\n\n📺 Más archivo en YouTube: youtube.com/@hablemosdeeco\n#HistoriaEconomica #Argentina"
+
+        limite = 280
+        espacio_dato = limite - len(encabezado) - len(cierre)
+        if len(dato_clave) > espacio_dato:
+            dato_texto = dato_clave[:max(0, espacio_dato - 3)] + "..."
+        else:
+            dato_texto = dato_clave
+
+        texto_tweet = encabezado + dato_texto + cierre
+
+        res = client_v2.create_tweet(text=texto_tweet, media_ids=media_ids)
+        tweet_id = res.data["id"]
+        print(f"¡Publicado exitosamente en X! Tweet ID: {tweet_id}")
+        return tweet_id
+    except Exception as e:
+        print(f"Advertencia al publicar en X (no detiene el proceso): {e}")
+        return None
+
 def main():
     with open("datos.json", "r", encoding="utf-8") as f:
         posts = json.load(f)
@@ -238,8 +293,22 @@ def main():
         post_pendiente["dato_clave"]
     )
 
-    ig_post_id = publicar_carrusel_en_instagram(rutas_placas, post_pendiente["caption"])
-    print(f"¡Carrusel publicado exitosamente en Instagram! ID: {ig_post_id}")
+    try:
+        ig_post_id = publicar_carrusel_en_instagram(rutas_placas, post_pendiente["caption"])
+        print(f"¡Carrusel publicado exitosamente en Instagram! ID: {ig_post_id}")
+    except Exception as e:
+        print(f"Error publicando en Instagram: {e}")
+        raise e
+
+    try:
+        x_tweet_id = publicar_en_x(
+            rutas_placas,
+            post_pendiente["fecha_historica"],
+            post_pendiente["titular"],
+            post_pendiente["dato_clave"]
+        )
+    except Exception as e:
+        print(f"Error secundario en X: {e}")
 
     post_pendiente["publicado"] = True
     with open("datos.json", "w", encoding="utf-8") as f:
