@@ -39,42 +39,16 @@ def obtener_fuente(tipo="sans", tamano=40):
                 pass
     return ImageFont.load_default()
 
-def obtener_logo_circular(tamano=(60, 60)):
-    ruta_logo = "assets/logo.jpg"
-    if not os.path.exists(ruta_logo):
-        return None
-    try:
-        logo = Image.open(ruta_logo).convert("RGBA")
-        centro_x = (130 + 493) // 2
-        centro_y = (129 + 463) // 2
-        radio = max(493 - 130, 463 - 129) // 2 + 10
-        logo_cropped = logo.crop((centro_x - radio, centro_y - radio, centro_x + radio, centro_y + radio))
-        logo_resized = logo_cropped.resize(tamano, Image.Resampling.LANCZOS)
-
-        mask = Image.new("L", tamano, 0)
-        dmask = ImageDraw.Draw(mask)
-        dmask.ellipse((0, 0, tamano[0], tamano[1]), fill=255)
-
-        circular = Image.new("RGBA", tamano, (0, 0, 0, 0))
-        circular.paste(logo_resized, (0, 0), mask=mask)
-
-        dborder = ImageDraw.Draw(circular)
-        dborder.ellipse((0, 0, tamano[0] - 1, tamano[1] - 1), outline=(255, 255, 255, 220), width=2)
-        return circular
-    except Exception:
-        return None
-
 def crear_placas_carrusel(fecha, titular, dato_clave):
     ancho, alto = 1080, 1350
-    fondo_color = (12, 14, 18)        # Negro grafito editorial idéntico a la web
-    celeste_brand = (14, 165, 233)     # Cyan / Celeste característico de HDE
+    fondo_color = (12, 14, 18)        # Negro grafito idéntico a la web
+    celeste_brand = (14, 165, 233)     # Cyan / Celeste HDE
     blanco = (255, 255, 255)           # Blanco puro
-    gris_sub = (203, 213, 225)         # Gris slate para textos secundarios
-    gris_card = (20, 24, 32)           # Fondo elevado de tarjetas
+    gris_sub = (203, 213, 225)         # Gris slate
+    gris_card = (20, 24, 32)           # Fondo tarjeta
     borde_card = (45, 55, 72)          # Borde sutil
     gris_tenue = (120, 130, 145)
 
-    font_hde = obtener_fuente("sans_bold", 19)
     font_brand = obtener_fuente("sans_bold", 22)
     font_tag = obtener_fuente("sans_bold", 26)
     font_titular = obtener_fuente("serif_bold", 54)
@@ -84,21 +58,15 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
 
     rutas_salida = []
 
-    logo_circ = obtener_logo_circular((60, 60))
-
     # ==========================
     # SLIDE 1: PORTADA
     # ==========================
     img1 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw1 = ImageDraw.Draw(img1)
 
-    # Logo e identidad HDE superior
-    if logo_circ:
-        img1.paste(logo_circ, (90, 75), mask=logo_circ)
-    else:
-        draw1.ellipse([(90, 80), (145, 135)], fill=blanco)
-        draw1.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw1.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    # Identidad editorial armónica superior (✦ HABLEMOS DE ECONOMÍA)
+    draw1.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw1.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     # Tag de categoría y fecha
     draw1.text((90, 190), f"HISTORIA MONETARIA  •  {fecha.upper()}", font=font_tag, fill=celeste_brand)
@@ -128,13 +96,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     img2 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw2 = ImageDraw.Draw(img2)
 
-    # Logo superior
-    if logo_circ:
-        img2.paste(logo_circ, (90, 75), mask=logo_circ)
-    else:
-        draw2.ellipse([(90, 80), (145, 135)], fill=blanco)
-        draw2.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw2.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    # Identidad editorial superior
+    draw2.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw2.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=celeste_brand)
 
@@ -164,13 +128,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     img3 = Image.new("RGB", (ancho, alto), color=fondo_color)
     draw3 = ImageDraw.Draw(img3)
 
-    # Logo superior
-    if logo_circ:
-        img3.paste(logo_circ, (90, 75), mask=logo_circ)
-    else:
-        draw3.ellipse([(90, 80), (145, 135)], fill=blanco)
-        draw3.text((98, 97), "HDE", font=font_hde, fill=fondo_color)
-    draw3.text((165, 93), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
+    # Identidad editorial superior
+    draw3.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw3.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=celeste_brand)
 
@@ -190,13 +150,7 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=gris_card, outline=celeste_brand, width=2)
 
     draw3.text((130, yt_y + 45), "CANAL OFICIAL DE YOUTUBE", font=font_tag, fill=celeste_brand)
-
-    logo_yt = obtener_logo_circular((68, 68))
-    if logo_yt:
-        img3.paste(logo_yt, (130, yt_y + 90), mask=logo_yt)
-        draw3.text((215, yt_y + 105), "@hablemosdeeco", font=font_titular, fill=blanco)
-    else:
-        draw3.text((130, yt_y + 100), "@hablemosdeeco", font=font_titular, fill=blanco)
+    draw3.text((130, yt_y + 105), "@hablemosdeeco", font=font_titular, fill=blanco)
 
     y_desc = yt_y + 195
     desc_texto = "Documentales completos, gráficos interactivos y análisis semanal de historia económica argentina."
@@ -256,7 +210,6 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
         item_ids.append(res_item["id"])
         print(f"Item {idx}/{len(rutas_imagenes)} creado con ID: {res_item['id']}")
 
-    # Esperar 6 segundos para que Meta termine de procesar las imágenes individuales
     time.sleep(6)
 
     # 2. Crear el contenedor padre de tipo CAROUSEL
@@ -275,8 +228,6 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
         raise Exception(f"Error al crear contenedor de carrusel en {host}: {res_carousel}")
 
     carousel_id = res_carousel["id"]
-
-    # Esperar 8 segundos para que el carrusel esté listo para publicar
     time.sleep(8)
 
     # 3. Publicar el carrusel
@@ -294,7 +245,7 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
 
     return res_publish["id"]
 
-def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
+def publicar_en_x(fecha, titular, dato_clave):
     if not (X_API_KEY and X_API_SECRET and X_ACCESS_TOKEN and X_ACCESS_SECRET):
         print("Credenciales de X no detectadas. Se saltea la publicación en X.")
         return None
@@ -306,21 +257,7 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
         return None
 
     try:
-        print("Intentando autenticar y subir imágenes a X (Twitter)...")
-        media_ids = []
-        try:
-            auth = tweepy.OAuth1UserHandler(
-                X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
-            )
-            api_v1 = tweepy.API(auth)
-            for ruta in rutas_imagenes:
-                media = api_v1.media_upload(ruta)
-                media_ids.append(media.media_id)
-        except Exception as e_media:
-            print(f"Aviso: La subida de imágenes en X no está habilitada en tu nivel de cuenta ({e_media}).")
-            print("Se procederá a publicar el tweet en formato texto con enlace a YouTube.")
-            media_ids = None
-
+        print("Conectando con la API v2 de X para publicar tweet...")
         client_v2 = tweepy.Client(
             consumer_key=X_API_KEY,
             consumer_secret=X_API_SECRET,
@@ -340,16 +277,12 @@ def publicar_en_x(rutas_imagenes, fecha, titular, dato_clave):
 
         texto_tweet = encabezado + dato_texto + cierre
 
-        if media_ids:
-            res = client_v2.create_tweet(text=texto_tweet, media_ids=media_ids)
-        else:
-            res = client_v2.create_tweet(text=texto_tweet)
-
+        res = client_v2.create_tweet(text=texto_tweet)
         tweet_id = res.data["id"]
         print(f"¡Publicado exitosamente en X! Tweet ID: {tweet_id}")
         return tweet_id
     except Exception as e:
-        print(f"Advertencia al publicar en X (no detiene el proceso): {e}")
+        print(f"Advertencia al publicar en X: {e}")
         return None
 
 def main():
@@ -377,7 +310,6 @@ def main():
 
     try:
         x_tweet_id = publicar_en_x(
-            rutas_placas,
             post_pendiente["fecha_historica"],
             post_pendiente["titular"],
             post_pendiente["dato_clave"]
