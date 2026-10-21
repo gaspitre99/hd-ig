@@ -174,7 +174,7 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3.text((155, yt_y + 380), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=fondo_color)
 
     draw3.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
-    draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeconomia.com.ar", font=font_sub, fill=gris_tenue)
+    draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
 
     ruta_s3 = "slide_3_cierre.jpg"
     img3.save(ruta_s3, quality=95)
