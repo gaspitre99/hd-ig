@@ -164,7 +164,7 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3.text((130, yt_y + 105), "@hablemosdeeco", font=font_titular, fill=blanco)
 
     y_desc = yt_y + 195
-    desc_texto = "Documentales completos, gráficos interactivos y análisis semanal de historia económica argentina."
+    desc_texto = "Documentales completos, gráficos interactivos y análisis de historia económica argentina."
     for linea in textwrap.wrap(desc_texto, width=32):
         draw3.text((130, y_desc), linea, font=font_dato, fill=gris_sub)
         y_desc += 50
@@ -174,7 +174,7 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3.text((155, yt_y + 380), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=fondo_color)
 
     draw3.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
-    draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
+    draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeconomia.com.ar", font=font_sub, fill=gris_tenue)
 
     ruta_s3 = "slide_3_cierre.jpg"
     img3.save(ruta_s3, quality=95)
@@ -380,15 +380,6 @@ def main():
     except Exception as e:
         print(f"Error publicando en Instagram: {e}")
         raise e
-
-    try:
-        x_tweet_id = publicar_en_x(
-            post_pendiente["fecha_historica"],
-            post_pendiente["titular"],
-            post_pendiente["dato_clave"]
-        )
-    except Exception as e:
-        print(f"Error secundario en X: {e}")
 
     post_pendiente["publicado"] = True
     with open("datos.json", "w", encoding="utf-8") as f:
