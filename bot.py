@@ -41,8 +41,8 @@ def obtener_paleta_editorial(post, es_efemeride_hoy=False):
     ahora_ar = datetime.now(tz_ar)
     fecha_hist = post.get("fecha_historica", "") if isinstance(post, dict) else str(post)
 
-    # 1. Modo Efeméride (Prioridad 1)
-    if es_efemeride_hoy or (isinstance(post, dict) and post.get("es_efemeride")):
+    # 1. Modo Efeméride (Prioridad 1: Únicamente si hoy coincide con el aniversario de la fecha)
+    if es_efemeride_hoy:
         return {
             "tipo": "efemeride",
             "color_acento": (245, 158, 11),       # Dorado / Ámbar
@@ -142,13 +142,6 @@ _REEMPLAZOS_RAW = [
 PATRONES_REEMPLAZO_CALIENTE = [
     (re.compile(base64.b64decode(b_pat).decode("utf-8"), re.IGNORECASE), repl)
     for b_pat, repl in _REEMPLAZOS_RAW
-]", re.IGNORECASE), "Equipo Editorial HDE"),
-    (re.compile(r"@?gaspitre(99)?", re.IGNORECASE), "hablemosdeeco"),
-    (re.compile(r"@?gaspi\b", re.IGNORECASE), "hde"),
-    (re.compile(r"\bGaspar\b", re.IGNORECASE), "Equipo HDE"),
-    (re.compile(r"\bTrep[aá]\b", re.IGNORECASE), "Equipo HDE"),
-    (re.compile(r"\bmi\s+canal\b", re.IGNORECASE), "nuestro canal"),
-    (re.compile(r"\bmi\s+investigaci[oó]n\b", re.IGNORECASE), "nuestra investigación"),
 ]
 
 def validar_y_sanitizar_post(post: dict) -> dict:
