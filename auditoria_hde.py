@@ -274,9 +274,9 @@ def importar_excel():
         p["problema_detectado"] = problema
         p["arreglo_sugerido"] = arreglo
 
-        # Regla de Verificación: Se valida si el usuario puso "SI" o si la IA puso "OK"
+        # Regla de Verificación: Se valida si el usuario puso "SI" o si la IA puso "OK" / "APROBADO" / "CORREGIDO"
         verif_previo = p.get("verificado", False)
-        if val_verif == "SI" or estado_ia == "OK":
+        if val_verif == "SI" or estado_ia in ("OK", "APROBADO", "CORREGIDO"):
             p["verificado"] = True
             if not verif_previo:
                 nuevos_verificados += 1
