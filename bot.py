@@ -384,6 +384,17 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
     host = "graph.instagram.com" if token.startswith("IG") else "graph.facebook.com"
     base_url = f"https://{host}/v21.0/{user_id}"
 
+    # Diagnóstico preventivo de conexión y permisos con Meta
+    try:
+        diag_me = requests.get(f"https://{host}/v21.0/me", params={"access_token": token}).json()
+        print(f"[DIAGNÓSTICO META] /me: {diag_me}")
+        diag_perms = requests.get(f"https://{host}/v21.0/me/permissions", params={"access_token": token}).json()
+        print(f"[DIAGNÓSTICO META] /me/permissions: {diag_perms}")
+        diag_target = requests.get(f"https://{host}/v21.0/{user_id}", params={"fields": "id,username,name", "access_token": token}).json()
+        print(f"[DIAGNÓSTICO META] /{user_id}: {diag_target}")
+    except Exception as e_diag:
+        print(f"[DIAGNÓSTICO META] Error en prueba previa: {e_diag}")
+
     # 1. Subir cada imagen y crear cada item del carrusel
     item_ids = []
     print(f"Subiendo {len(rutas_imagenes)} placas para el carrusel...")
