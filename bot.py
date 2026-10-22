@@ -4,6 +4,7 @@ import os
 import textwrap
 import time
 import csv
+import re
 from datetime import datetime, timezone, timedelta
 
 if sys.platform == "win32":
@@ -104,9 +105,53 @@ def obtener_fuente(tipo="sans", tamano=40):
                 pass
     return ImageFont.load_default()
 
+# ========================================================
+# CORTAFUEGOS DE PRIVACIDAD DE ÚLTIMA MILLA (MODO LOW PROFILE)
+# ========================================================
+REGEX_PATRONES_IDENTIDAD = re.compile(
+    r"(gaspar|trep[aá]|gaspitre|gaspi|gaspar's notion|\bmi\s+canal\b|\bmi\s+investigaci[oó]n\b)",
+    re.IGNORECASE
+)
+
+PATRONES_REEMPLAZO_CALIENTE = [
+    (re.compile(r"Gaspar'?s\s+Notion", re.IGNORECASE), "Archivo Editorial HDE"),
+    (re.compile(r"Gaspar\s+Trep[aá]", re.IGNORECASE), "Equipo Editorial HDE"),
+    (re.compile(r"@?gaspitre(99)?", re.IGNORECASE), "hablemosdeeco"),
+    (re.compile(r"@?gaspi\b", re.IGNORECASE), "hde"),
+    (re.compile(r"\bGaspar\b", re.IGNORECASE), "Equipo HDE"),
+    (re.compile(r"\bTrep[aá]\b", re.IGNORECASE), "Equipo HDE"),
+    (re.compile(r"\bmi\s+canal\b", re.IGNORECASE), "nuestro canal"),
+    (re.compile(r"\bmi\s+investigaci[oó]n\b", re.IGNORECASE), "nuestra investigación"),
+]
+
+def validar_y_sanitizar_post(post: dict) -> dict:
+    """
+    Cortafuegos de Privacidad de Última Milla.
+    Inspecciona y sanitiza todos los campos de texto del post para garantizar 0
+    filtraciones de identidad personal antes de dibujar en Pillow o publicar en Instagram.
+    Si se detecta un intento forzoso de filtración no sanitizable, aborta la ejecución.
+    """
+    if not isinstance(post, dict):
+        return post
+
+    campos = ["titular", "dato_clave", "caption", "fuente_oficial", "tipo_valor", "origen_guion", "fecha_historica"]
+    for c in campos:
+        val = post.get(c, "")
+        if isinstance(val, str) and REGEX_PATRONES_IDENTIDAD.search(val):
+            # Sanitización en caliente a identidad institucional
+            val_limpio = val
+            for pat, repl in PATRONES_REEMPLAZO_CALIENTE:
+                val_limpio = pat.sub(repl, val_limpio)
+            post[c] = val_limpio
+
+            # Control de tolerancia cero: si persiste rastro, abortar
+            if REGEX_PATRONES_IDENTIDAD.search(post[c]):
+                raise ValueError(f"CRITICAL PRIVACY ALERT: Intento de publicar rastro de identidad personal en campo '{c}'. Publicación abortada.")
+    return post
+
 def crear_placas_carrusel(post_o_fecha, titular=None, dato_clave=None, es_efemeride_hoy=False, prefijo_archivo="slide"):
     if isinstance(post_o_fecha, dict):
-        post = post_o_fecha
+        post = validar_y_sanitizar_post(post_o_fecha)
         fecha = post.get("fecha_historica", "")
         titular = post.get("titular", "")
         dato_clave = post.get("dato_clave", "")
@@ -115,6 +160,10 @@ def crear_placas_carrusel(post_o_fecha, titular=None, dato_clave=None, es_efemer
         titular = str(titular or "")
         dato_clave = str(dato_clave or "")
         post = {"fecha_historica": fecha, "titular": titular, "dato_clave": dato_clave}
+        post = validar_y_sanitizar_post(post)
+        fecha = post.get("fecha_historica", "")
+        titular = post.get("titular", "")
+        dato_clave = post.get("dato_clave", "")
 
     paleta = obtener_paleta_editorial(post, es_efemeride_hoy=es_efemeride_hoy)
     color_acento = paleta["color_acento"]
@@ -468,10 +517,14 @@ def seleccionar_post_a_publicar(posts):
     return siguiente, False
 
 def actualizar_csv(posts, ruta_csv="control_publicaciones.csv"):
-    """Regenera la planilla de control de auditoría para Excel tras cada ejecución."""
+    """Regenera la planilla de control de auditoría para Excel tras cada ejecución con verificación de anonimato."""
     with open(ruta_csv, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f, delimiter=";")
-        writer.writerow(["ID", "ESTADO", "VERIFICADO", "FECHA HISTÓRICA", "TITULAR", "DATO CLAVE", "FUENTE OFICIAL", "TIPO DE VALOR", "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"])
+        writer.writerow([
+            "ID", "ESTADO", "VERIFICADO", "CONTROL_ANONIMATO", "ORIGEN_GUION",
+            "FECHA HISTÓRICA", "TITULAR", "DATO CLAVE", "FUENTE OFICIAL", "TIPO DE VALOR",
+            "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"
+        ])
         for p in posts:
             fecha = p.get("fecha_historica", "")
             titular = p.get("titular", "")
@@ -479,10 +532,19 @@ def actualizar_csv(posts, ruta_csv="control_publicaciones.csv"):
             caption_ig = p.get("caption", "")
             fuente = p.get("fuente_oficial", "")
             tipo_val = p.get("tipo_valor", "")
+            origen = p.get("origen_guion", "Lote Fundacional HDE")
+
+            # Verificación de privacidad institucional
+            texto_fila = f"{titular} {dato} {caption_ig} {fuente} {tipo_val} {origen}"
+            control_anon = "LIMPIO" if not REGEX_PATRONES_IDENTIDAD.search(texto_fila) else "⚠️ ALERTA IDENTIDAD"
+
             texto_x = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n{dato}\n\n#HistoriaEconomica #Argentina"
             estado = "PUBLICADO" if p.get("publicado") else "PENDIENTE"
             verificado = "SI" if p.get("verificado") else "NO"
-            writer.writerow([p.get("id"), estado, verificado, fecha, titular, dato, fuente, tipo_val, caption_ig, texto_x])
+            writer.writerow([
+                p.get("id"), estado, verificado, control_anon, origen,
+                fecha, titular, dato, fuente, tipo_val, caption_ig, texto_x
+            ])
     print(f"Planilla de control ({ruta_csv}) sincronizada automáticamente.")
 
 # Alias para compatibilidad histórica
@@ -496,6 +558,9 @@ def main():
     if not post_pendiente:
         print("No hay publicaciones verificadas pendientes en datos.json. Publicación detenida por seguridad.")
         return
+
+    # Cortafuegos de Privacidad de Última Milla (Tolerancia Cero)
+    validar_y_sanitizar_post(post_pendiente)
 
     print(f"Generando carrusel para el post #{post_pendiente.get('id')}: {post_pendiente.get('titular')}...")
     rutas_placas = crear_placas_carrusel(post_pendiente, es_efemeride_hoy=es_efemeride_hoy)
