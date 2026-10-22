@@ -384,16 +384,16 @@ def publicar_carrusel_en_instagram(rutas_imagenes, caption):
     host = "graph.instagram.com" if token.startswith("IG") else "graph.facebook.com"
     base_url = f"https://{host}/v21.0/{user_id}"
 
-    # Diagnóstico preventivo de conexión y permisos con Meta
-    try:
-        diag_me = requests.get(f"https://{host}/v21.0/me", params={"access_token": token}).json()
-        print(f"[DIAGNÓSTICO META] /me: {diag_me}")
-        diag_perms = requests.get(f"https://{host}/v21.0/me/permissions", params={"access_token": token}).json()
-        print(f"[DIAGNÓSTICO META] /me/permissions: {diag_perms}")
-        diag_target = requests.get(f"https://{host}/v21.0/{user_id}", params={"fields": "id,username,name", "access_token": token}).json()
-        print(f"[DIAGNÓSTICO META] /{user_id}: {diag_target}")
-    except Exception as e_diag:
-        print(f"[DIAGNÓSTICO META] Error en prueba previa: {e_diag}")
+    # Validación previa de autenticación con Meta antes de procesar imágenes
+    res_auth = requests.get(f"https://{host}/v21.0/me", params={"access_token": token}).json()
+    if "error" in res_auth:
+        err_msg = res_auth["error"].get("message", "")
+        err_code = res_auth["error"].get("code", "")
+        raise Exception(
+            f"Meta Graph API rechazó el acceso (Código {err_code}): '{err_msg}'. "
+            "El token IG_ACCESS_TOKEN caducó o tu aplicación en developers.facebook.com "
+            "tiene una alerta de seguridad/revisión pendiente."
+        )
 
     # 1. Subir cada imagen y crear cada item del carrusel
     item_ids = []
