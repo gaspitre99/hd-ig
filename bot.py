@@ -108,14 +108,41 @@ def obtener_fuente(tipo="sans", tamano=40):
 # ========================================================
 # CORTAFUEGOS DE PRIVACIDAD DE ÚLTIMA MILLA (MODO LOW PROFILE)
 # ========================================================
+import base64
+
+_B64_PATRON_ID = b"XGIoZ2FzcGFyfHRyZXBbYcOhXXxnYXNwaSg/OnRyZTk5fHRyZSk/KVxifGdhc3BhclwnP3M/XHMqbm90aW9ufFxibWlccytjYW5hbFxifFxibWlccytpbnZlc3RpZ2FjaVtvw7Ndblxi"
 REGEX_PATRONES_IDENTIDAD = re.compile(
-    r"(gaspar|trep[aá]|gaspitre|gaspi|gaspar's notion|\bmi\s+canal\b|\bmi\s+investigaci[oó]n\b)",
+    base64.b64decode(_B64_PATRON_ID).decode("utf-8"),
     re.IGNORECASE
 )
 
+_REEMPLAZOS_RAW = [
+    (b"Z2FzcGFyXCc/cz9ccypub3Rpb24=", "Archivo Editorial HDE"),
+    (b"XGJwb3JccytnYXNwYXIoXHMrdHJlcFthw6FdKT9cYg==", "por el Equipo Editorial HDE"),
+    (b"XGJkZVxzK2dhc3Bhcihccyt0cmVwW2HDoV0pP1xi", "del Equipo Editorial HDE"),
+    (b"XGJpbnZlc3RpZ2FjaVtvw7NdblxzK2RlXHMrZ2FzcGFyKFxzK3RyZXBbYcOhXSk/XGI=", "investigación del Equipo Editorial HDE"),
+    (b"XGJnYXNwYXJccyt0cmVwW2HDoV1cYg==", "Equipo Editorial HDE"),
+    (b"XGJnYXNwYXJcYg==", "Equipo Editorial HDE"),
+    (b"XGJnYXNwaXRyZSg5OSk/XGI=", "hablemosdeeco"),
+    (b"XGJnYXNwaVxi", "hablemosdeeco"),
+    (b"XGJ0cmVwYVxzK2FccytjYXNpXGI=", "asciende a casi"),
+    (b"XGJ0cmVwYVxzK2FsXGI=", "asciende al"),
+    (b"XGJ0cmVwYVxzK2FcYg==", "asciende a"),
+    (b"XGJhbFxzK3RyZXBhclxzK2FsXGI=", "al saltar al"),
+    (b"XGJhbFxzK3RyZXBhclxzK2FcYg==", "al saltar a"),
+    (b"XGJ0cmVwYXJcYg==", "escalar"),
+    (b"XGJ0cmVwW2HDoV1cYg==", "asciende"),
+    (b"XGJtaVxzK2NhbmFsXGI=", "nuestro canal"),
+    (b"XGJtaXNccytndWlvbmVzXGI=", "nuestros informes"),
+    (b"XGJtaVxzK2ludmVzdGlnYWNpW2/Ds11uXGI=", "nuestra investigación"),
+    (b"XGJpbnZlc3RpZ3VbZcOpXVxi", "analizamos"),
+    (b"XGJtaVxzK2N1ZW50YVxi", "nuestra cuenta"),
+]
+
 PATRONES_REEMPLAZO_CALIENTE = [
-    (re.compile(r"Gaspar'?s\s+Notion", re.IGNORECASE), "Archivo Editorial HDE"),
-    (re.compile(r"Gaspar\s+Trep[aá]", re.IGNORECASE), "Equipo Editorial HDE"),
+    (re.compile(base64.b64decode(b_pat).decode("utf-8"), re.IGNORECASE), repl)
+    for b_pat, repl in _REEMPLAZOS_RAW
+]", re.IGNORECASE), "Equipo Editorial HDE"),
     (re.compile(r"@?gaspitre(99)?", re.IGNORECASE), "hablemosdeeco"),
     (re.compile(r"@?gaspi\b", re.IGNORECASE), "hde"),
     (re.compile(r"\bGaspar\b", re.IGNORECASE), "Equipo HDE"),
@@ -493,7 +520,9 @@ def seleccionar_post_a_publicar(posts):
     # Cerrojo de Seguridad: solo posts pendientes que hayan sido auditados (verificado == True)
     posts_elegibles = [
         p for p in posts 
-        if not p.get("publicado", False) and p.get("verificado", False) is True
+        if not p.get("publicado", False) 
+        and p.get("verificado", False) is True
+        and not REGEX_PATRONES_IDENTIDAD.search(" ".join(str(v) for v in p.values() if isinstance(v, str)))
     ]
 
     # Alerta preventiva si el inventario de publicaciones verificadas es crítico

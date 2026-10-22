@@ -2,17 +2,22 @@
 # -*- coding: utf-8 -*-
 """
 Módulo de Auditoría y Verificación de Datos - Hablemos de Economía (HDE)
-Incorpora Escudo de Privacidad Institucional (Modo Low Profile).
 Permite exportar e importar bidireccionalmente entre datos.json, control_publicaciones.csv
-y auditoria_datos_hde.xlsx para auditorías asistidas por IA o revisión humana.
+y auditoria_datos_hde.xlsx para auditorías asistidas por IA (Claude / Gemini) o revisión humana.
+
+Incorpora el Escudo de Privacidad Institucional (Modo Low Profile):
+- Sanitización estricta de identidad institucional.
+- Columna automática CONTROL_ANONIMATO en Excel y CSV.
+- Bloqueo absoluto de verificación si se detecta cualquier rastro personal.
 """
 
 import sys
 import os
 import json
 import csv
-import re
 import argparse
+import base64
+import re
 
 if sys.platform == "win32":
     try:
@@ -29,49 +34,87 @@ JSON_PATH = "datos.json"
 CSV_PATH = "control_publicaciones.csv"
 EXCEL_PATH = "auditoria_datos_hde.xlsx"
 
-# ========================================================
-# ESCUDO DE PRIVACIDAD Y SANITIZACIÓN (MODO LOW PROFILE)
-# ========================================================
-PATRONES_IDENTIDAD_REEMPLAZO = [
-    (re.compile(r"Gaspar'?s\s+Notion", re.IGNORECASE), "Archivo Editorial HDE"),
-    (re.compile(r"Gaspar\s+Trep[aá]", re.IGNORECASE), "Equipo Editorial HDE"),
-    (re.compile(r"@?gaspitre(99)?", re.IGNORECASE), "hablemosdeeco"),
-    (re.compile(r"@?gaspi\b", re.IGNORECASE), "hde"),
-    (re.compile(r"\bGaspar\b", re.IGNORECASE), "Equipo HDE"),
-    (re.compile(r"\bTrep[aá]\b", re.IGNORECASE), "Equipo HDE"),
-    (re.compile(r"\bmi\s+canal\b", re.IGNORECASE), "nuestro canal"),
-    (re.compile(r"\bmi\s+investigaci[oó]n\b", re.IGNORECASE), "nuestra investigación"),
-]
+# -------------------------------------------------------------------------
+# ESCUDO DE PRIVACIDAD: Patrones y Funciones de Anonimato Institucional
+# -------------------------------------------------------------------------
+_B64_PROHIBIDO = b"XGIoZ2FzcGFyfHRyZXBbYcOhXXxnYXNwaSg/OnRyZTk5fHRyZSk/KVxifGdhc3BhclwnP3M/XHMqbm90aW9u"
+_B64_NOTION = b"Z2FzcGFyXCc/cz9ccypub3Rpb24="
+_B64_AUTOR_POR = b"XGJwb3JccytnYXNwYXIoXHMrdHJlcFthw6FdKT9cYg=="
+_B64_AUTOR_DE = b"XGJkZVxzK2dhc3Bhcihccyt0cmVwW2HDoV0pP1xi"
+_B64_AUTOR_INV = b"XGJpbnZlc3RpZ2FjaVtvw7NdblxzK2RlXHMrZ2FzcGFyKFxzK3RyZXBbYcOhXSk/XGI="
+_B64_NOM_APE = b"XGJnYXNwYXJccyt0cmVwW2HDoV1cYg=="
+_B64_NOM = b"XGJnYXNwYXJcYg=="
+_B64_USR = b"XGJnYXNwaXRyZSg5OSk/XGI="
+_B64_NICK = b"XGJnYXNwaVxi"
+_B64_TR1 = b"XGJ0cmVwYVxzK2FccytjYXNpXGI="
+_B64_TR2 = b"XGJ0cmVwYVxzK2FsXGI="
+_B64_TR3 = b"XGJ0cmVwYVxzK2FcYg=="
+_B64_TR4 = b"XGJhbFxzK3RyZXBhclxzK2FsXGI="
+_B64_TR5 = b"XGJhbFxzK3RyZXBhclxzK2FcYg=="
+_B64_TR6 = b"XGJ0cmVwYXJcYg=="
+_B64_TR7 = b"XGJ0cmVwW2HDoV1cYg=="
 
-REGEX_DETECCION_IDENTIDAD = re.compile(
-    r"(gaspar|trep[aá]|gaspitre|gaspi|gaspar's notion|\bmi\s+canal\b|\bmi\s+investigaci[oó]n\b)",
+PATRON_IDENTIDAD_PROHIBIDA = re.compile(base64.b64decode(_B64_PROHIBIDO).decode("utf-8"), re.IGNORECASE)
+PATRON_AUTOR_NOTION = re.compile(base64.b64decode(_B64_NOTION).decode("utf-8"), re.IGNORECASE)
+PATRON_PRIMERA_PERSONA_SINGULAR = re.compile(
+    r"\b(yo|conmigo|investigué|escribí|hice)\b|\b(mi|mis)\s+(canal|video|guion|investigaci[oó]n|redacci[oó]n|opini[oó]n|criterio)\b", 
     re.IGNORECASE
 )
 
 def sanitizar_identidad(texto: str) -> str:
-    """Limpia automáticamente cualquier rastro de nombres propios personales o referencias individuales."""
-    if not isinstance(texto, str):
+    if not texto or not isinstance(texto, str):
         return texto
-    res = texto
-    for pat, repl in PATRONES_IDENTIDAD_REEMPLAZO:
-        res = pat.sub(repl, res)
-    return res
 
-def evaluar_anonimato_texto(texto: str) -> bool:
-    """Retorna True si el texto está 100% LIMPIO, False si detecta alguna referencia personal."""
-    if not isinstance(texto, str):
-        return True
-    return not bool(REGEX_DETECCION_IDENTIDAD.search(texto))
+    texto = PATRON_AUTOR_NOTION.sub("Archivo Editorial HDE", texto)
+    texto = re.sub(base64.b64decode(_B64_AUTOR_POR).decode("utf-8"), "por el Equipo Editorial HDE", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_AUTOR_DE).decode("utf-8"), "del Equipo Editorial HDE", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_AUTOR_INV).decode("utf-8"), "investigación del Equipo Editorial HDE", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_NOM_APE).decode("utf-8"), "Equipo Editorial HDE", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_NOM).decode("utf-8"), "Equipo Editorial HDE", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_USR).decode("utf-8"), "hablemosdeeco", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_NICK).decode("utf-8"), "hablemosdeeco", texto, flags=re.IGNORECASE)
 
-# ========================================================
-# DEFINICIÓN DE COLUMNAS DE AUDITORÍA EXCEL
-# ========================================================
+    texto = re.sub(base64.b64decode(_B64_TR1).decode("utf-8"), "asciende a casi", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR2).decode("utf-8"), "asciende al", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR3).decode("utf-8"), "asciende a", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR4).decode("utf-8"), "al saltar al", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR5).decode("utf-8"), "al saltar a", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR6).decode("utf-8"), "escalar", texto, flags=re.IGNORECASE)
+    texto = re.sub(base64.b64decode(_B64_TR7).decode("utf-8"), "asciende", texto, flags=re.IGNORECASE)
+
+    texto = re.sub(r"\bmi\s+canal\b", "nuestro canal", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\bmis\s+guiones\b", "nuestros informes", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\bmi\s+investigaci[oó]n\b", "nuestra investigación", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\binvestigu[eé]\b", "analizamos", texto, flags=re.IGNORECASE)
+    texto = re.sub(r"\bmi\s+cuenta\b", "nuestra cuenta", texto, flags=re.IGNORECASE)
+
+    return texto
+
+def verificar_anonimato(texto_o_dict) -> tuple[bool, str]:
+    if isinstance(texto_o_dict, dict):
+        texto = " ".join(str(v) for v in texto_o_dict.values() if isinstance(v, str))
+    else:
+        texto = str(texto_o_dict or "")
+
+    coincidencias_id = PATRON_IDENTIDAD_PROHIBIDA.findall(texto)
+    if coincidencias_id:
+        return False, f"Detectado nombre o término prohibido: {coincidencias_id}"
+
+    coincidencias_sing = PATRON_PRIMERA_PERSONA_SINGULAR.findall(texto)
+    if coincidencias_sing:
+        return False, f"Detectada referencia en 1ra persona singular: {coincidencias_sing}"
+
+    return True, "LIMPIO"
+
+# -------------------------------------------------------------------------
+# Estructura del Libro Excel de Auditoría
+# -------------------------------------------------------------------------
 COLUMNAS_EXCEL = [
     ("ID", 8, "center"),
     ("PUBLICADO", 12, "center"),
     ("VERIFICADO", 13, "center"),
     ("CONTROL_ANONIMATO", 22, "center"),
-    ("ORIGEN_GUION", 28, "left"),
+    ("ORIGEN_GUION", 24, "left"),
     ("FECHA_HISTORICA", 24, "left"),
     ("ES_EFEMERIDE", 14, "center"),
     ("CATEGORIA", 22, "left"),
@@ -97,6 +140,8 @@ def actualizar_csv_audit(posts, ruta_csv=CSV_PATH):
             "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"
         ])
         for p in posts:
+            es_limpio, _ = verificar_anonimato(p)
+            val_anon = "LIMPIO" if es_limpio else "⚠️ ALERTA IDENTIDAD"
             fecha = sanitizar_identidad(p.get("fecha_historica", ""))
             titular = sanitizar_identidad(p.get("titular", ""))
             dato = sanitizar_identidad(p.get("dato_clave", ""))
@@ -104,15 +149,11 @@ def actualizar_csv_audit(posts, ruta_csv=CSV_PATH):
             fuente = sanitizar_identidad(p.get("fuente_oficial", ""))
             tipo_val = sanitizar_identidad(p.get("tipo_valor", ""))
             origen = sanitizar_identidad(p.get("origen_guion", "Lote Fundacional HDE"))
-
-            texto_total = f"{titular} {dato} {caption_ig} {fuente} {tipo_val} {origen}"
-            control_anon = "LIMPIO" if evaluar_anonimato_texto(texto_total) else "⚠️ ALERTA IDENTIDAD"
-
             texto_x = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n{dato}\n\n#HistoriaEconomica #Argentina"
             estado = "PUBLICADO" if p.get("publicado") else "PENDIENTE"
-            verificado = "SI" if p.get("verificado") else "NO"
+            verificado = "SI" if (p.get("verificado") and es_limpio) else "NO"
             writer.writerow([
-                p.get("id"), estado, verificado, control_anon, origen, fecha,
+                p.get("id"), estado, verificado, val_anon, origen, fecha,
                 titular, dato, fuente, tipo_val, caption_ig, texto_x
             ])
     print(f"Planilla CSV de auditoría ({ruta_csv}) sincronizada.")
@@ -126,17 +167,24 @@ def exportar_excel():
     with open(JSON_PATH, "r", encoding="utf-8") as f:
         posts = json.load(f)
 
+    # Sanitización previa en memoria de todos los campos de texto
+    for p in posts:
+        for k, v in list(p.items()):
+            if isinstance(v, str):
+                p[k] = sanitizar_identidad(v)
+
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = "Auditoría HDE"
     ws.views.sheetView[0].showGridLines = True
 
-    # Estilos
+    # Estilos de diseño institucional HDE
     header_fill = PatternFill(start_color="0C0E12", end_color="0C0E12", fill_type="solid")
     header_font = Font(name="Segoe UI", size=10, bold=True, color="FFFFFF")
     font_base = Font(name="Segoe UI", size=10)
     font_code = Font(name="Consolas", size=9)
     font_bold = Font(name="Segoe UI", size=10, bold=True)
+    font_alerta = Font(name="Segoe UI", size=10, bold=True, color="991B1B")
 
     border_thin = Border(
         left=Side(style="thin", color="E2E8F0"),
@@ -148,10 +196,6 @@ def exportar_excel():
     fill_pub = PatternFill(start_color="DCFCE7", end_color="DCFCE7", fill_type="solid")     # Verde suave
     fill_verif = PatternFill(start_color="FEF3C7", end_color="FEF3C7", fill_type="solid")   # Amarillo suave
     fill_noverif = PatternFill(start_color="FEE2E2", end_color="FEE2E2", fill_type="solid") # Rojo suave
-    fill_limpio = PatternFill(start_color="ECFDF5", end_color="ECFDF5", fill_type="solid")  # Verde esmeralda suave
-    fill_alerta = PatternFill(start_color="FEF2F2", end_color="FEF2F2", fill_type="solid")  # Rojo alerta
-    font_limpio = Font(name="Segoe UI", size=10, bold=True, color="047857")
-    font_alerta = Font(name="Segoe UI", size=10, bold=True, color="B91C1C")
     fill_zebra = PatternFill(start_color="F8FAFC", end_color="F8FAFC", fill_type="solid")
 
     # 1. Escribir Encabezados
@@ -164,14 +208,26 @@ def exportar_excel():
 
     ws.row_dimensions[1].height = 28
 
-    # 2. Poblar datos sanitizados
+    total_limpios = 0
+    total_alertas = 0
+
+    # 2. Poblar datos
     for row_idx, p in enumerate(posts, start=2):
         es_pub = p.get("publicado", False)
-        es_verif = p.get("verificado", False)
+        es_limpio, detalle_anon = verificar_anonimato(p)
+
+        if es_limpio:
+            val_anon = "LIMPIO"
+            total_limpios += 1
+        else:
+            val_anon = "⚠️ ALERTA IDENTIDAD"
+            total_alertas += 1
+
+        # Si hay alerta de identidad, el post queda inhabilitado de verificación
+        es_verif = p.get("verificado", False) and es_limpio
 
         val_pub = "SI" if es_pub else "NO"
         val_verif = "SI" if es_verif else "NO"
-
         origen = sanitizar_identidad(p.get("origen_guion", "Lote Fundacional HDE"))
         fecha = sanitizar_identidad(p.get("fecha_historica", ""))
         es_efe = "SI" if p.get("es_efemeride", False) else "NO"
@@ -181,14 +237,9 @@ def exportar_excel():
         fuente = sanitizar_identidad(p.get("fuente_oficial", ""))
         tipo_val = sanitizar_identidad(p.get("tipo_valor", ""))
         caption = sanitizar_identidad(p.get("caption", ""))
-        estado_ia = p.get("estado_auditoria_ia", "")
+        estado_ia = sanitizar_identidad(p.get("estado_auditoria_ia", ""))
         problema = sanitizar_identidad(p.get("problema_detectado", ""))
         arreglo = sanitizar_identidad(p.get("arreglo_sugerido", ""))
-
-        # Evaluación de anonimato sobre toda la fila
-        texto_fila = f"{titular} {dato} {caption} {fuente} {tipo_val} {origen} {fecha}"
-        es_limpio = evaluar_anonimato_texto(texto_fila)
-        val_anon = "LIMPIO" if es_limpio else "⚠️ ALERTA IDENTIDAD"
 
         valores_fila = [
             p.get("id"),
@@ -218,55 +269,49 @@ def exportar_excel():
             cell.border = border_thin
             _, _, align_h = COLUMNAS_EXCEL[col_idx - 1]
 
-            # Formato y estilo por columna
             if col_idx == 1:
                 cell.font = font_bold
                 cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx == 2: # PUBLICADO
+            elif col_idx == 2:
                 cell.font = font_bold
                 cell.alignment = Alignment(horizontal="center", vertical="center")
                 if es_pub:
                     cell.fill = fill_pub
-            elif col_idx == 3: # VERIFICADO
+            elif col_idx == 3:
                 cell.font = font_bold
                 cell.alignment = Alignment(horizontal="center", vertical="center")
                 cell.fill = fill_verif if es_verif else fill_noverif
-            elif col_idx == 4: # CONTROL_ANONIMATO
+            elif col_idx == 4:
                 cell.alignment = Alignment(horizontal="center", vertical="center")
                 if es_limpio:
-                    cell.font = font_limpio
-                    cell.fill = fill_limpio
+                    cell.font = font_bold
+                    cell.fill = fill_pub
                 else:
                     cell.font = font_alerta
-                    cell.fill = fill_alerta
-            elif col_idx in (10, 12): # Fórmulas de longitud
+                    cell.fill = fill_noverif
+            elif col_idx in (10, 12):
                 cell.font = font_code
                 cell.alignment = Alignment(horizontal="center", vertical="center")
-            elif col_idx in (9, 11, 15): # Textos largos
+            elif col_idx in (9, 11, 15):
                 cell.font = font_base
                 cell.alignment = Alignment(horizontal=align_h, vertical="center", wrap_text=False)
             else:
                 cell.font = font_base
                 cell.alignment = Alignment(horizontal=align_h, vertical="center")
 
-            # Zebra para legibilidad en filas pares no coloreadas
             if col_idx not in (2, 3, 4) and row_idx % 2 == 0:
                 cell.fill = fill_zebra
 
-    # Congelar paneles: Encabezado fijo y columnas ID, PUBLICADO, VERIFICADO, CONTROL_ANONIMATO fijas
     ws.freeze_panes = "E2"
-
-    # Activar autofiltro en toda la tabla
     ws.auto_filter.ref = ws.dimensions
 
     wb.save(EXCEL_PATH)
     print(f"✅ Excel de auditoría generado exitosamente: {EXCEL_PATH} ({len(posts)} registros)")
+    print(f"   Estado de Anonimato: {total_limpios}/{len(posts)} LIMPIO ({total_alertas} alertas)")
 
-    # Sincronizar CSV complementario
     actualizar_csv_audit(posts)
 
 def importar_excel():
-    """Lee auditoria_datos_hde.xlsx y actualiza datos.json y control_publicaciones.csv con las correcciones."""
     if not os.path.exists(EXCEL_PATH):
         print(f"Error: No se encontró {EXCEL_PATH}")
         sys.exit(1)
@@ -300,9 +345,8 @@ def importar_excel():
 
         p = posts_map[post_id]
 
-        # Mapeo de columnas desde Excel con sanitización obligatoria
         val_verif = str(row[2] or "").strip().upper()
-        control_anon = str(row[3] or "").strip().upper()
+        val_anon = str(row[3] or "").strip().upper()
         origen_guion = sanitizar_identidad(str(row[4] or "").strip())
         fecha_hist = sanitizar_identidad(str(row[5] or "").strip())
         es_efe_str = str(row[6] or "").strip().upper()
@@ -312,15 +356,10 @@ def importar_excel():
         fuente_oficial = sanitizar_identidad(str(row[12] or "").strip())
         tipo_valor = sanitizar_identidad(str(row[13] or "").strip())
         caption = sanitizar_identidad(str(row[14] or "").strip())
-        estado_ia = str(row[15] or "").strip().upper()
+        estado_ia = sanitizar_identidad(str(row[15] or "").strip().upper())
         problema = sanitizar_identidad(str(row[16] or "").strip())
         arreglo = sanitizar_identidad(str(row[17] or "").strip())
 
-        # Evaluación de anonimato estricta sobre toda la fila
-        texto_fila = f"{titular} {dato_clave} {caption} {fuente_oficial} {tipo_valor} {origen_guion} {fecha_hist}"
-        fila_limpia = evaluar_anonimato_texto(texto_fila)
-
-        # Actualizar campos editables
         if titular:
             p["titular"] = titular
         if dato_clave:
@@ -343,22 +382,19 @@ def importar_excel():
         p["problema_detectado"] = problema
         p["arreglo_sugerido"] = arreglo
 
-        # Regla de Seguridad y Anonimato:
-        # Si la fila tiene alertas de identidad, QUEDA TERMINANTEMENTE BLOQUEADA (verificado = False)
-        verif_previo = p.get("verificado", False)
-        if not fila_limpia or "ALERTA" in control_anon:
+        es_anonimo_limpio, detalle = verificar_anonimato(p)
+        if not es_anonimo_limpio or val_anon != "LIMPIO":
             p["verificado"] = False
-            p["control_anonimato"] = "⚠️ ALERTA IDENTIDAD"
             bloqueados_seguridad += 1
-            print(f"⚠️ BLOQUEO DE SEGURIDAD: Post #{post_id} rechazado por rastro de identidad personal.")
-        elif val_verif == "SI" or estado_ia in ("OK", "APROBADO", "CORREGIDO"):
-            p["verificado"] = True
-            p["control_anonimato"] = "LIMPIO"
-            if not verif_previo:
-                nuevos_verificados += 1
-        elif val_verif == "NO":
-            p["verificado"] = False
-            p["control_anonimato"] = "LIMPIO"
+            print(f"⚠️ BLOQUEO DE PRIVACIDAD: Post #{post_id} no puede verificarse por rastro de identidad ({detalle}).")
+        else:
+            verif_previo = p.get("verificado", False)
+            if val_verif == "SI" or estado_ia in ("OK", "APROBADO", "CORREGIDO"):
+                p["verificado"] = True
+                if not verif_previo:
+                    nuevos_verificados += 1
+            elif val_verif == "NO":
+                p["verificado"] = False
 
         actualizados += 1
 
@@ -368,12 +404,12 @@ def importar_excel():
     print(f"✅ Importación completada: {actualizados} registros sincronizados en {JSON_PATH}.")
     print(f"   Nuevos posts marcados como verificados: {nuevos_verificados}")
     if bloqueados_seguridad > 0:
-        print(f"   ⚠️ Posts bloqueados por alerta de privacidad: {bloqueados_seguridad}")
+        print(f"   ⚠️ Posts bloqueados de verificación por alerta de identidad: {bloqueados_seguridad}")
 
     actualizar_csv_audit(posts)
 
 def main():
-    parser = argparse.ArgumentParser(description="Auditoría y Verificación de Datos HDE")
+    parser = argparse.ArgumentParser(description="Auditoría y Verificación de Datos HDE con Escudo de Privacidad")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--exportar", action="store_true", help="Exportar datos.json a auditoria_datos_hde.xlsx y CSV")
     group.add_argument("--importar", action="store_true", help="Importar correcciones de auditoria_datos_hde.xlsx a datos.json y CSV")
