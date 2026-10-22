@@ -1,5 +1,5 @@
-﻿ID;ESTADO;FECHA HISTÓRICA;TITULAR;DATO CLAVE;TEXTO FINAL INSTAGRAM;TEXTO FINAL X (TWITTER)
-1;PUBLICADO;14 de junio de 1985;El nacimiento del Austral y el shock heterodoxo;Se quitaron tres ceros al Peso Argentino y se congelaron precios, tarifas y salarios de forma simultánea.;"En junio de 1985, con una inflación mensual que superaba el 30%, el ministro Juan Vital Sourrouille anunció por cadena nacional el Plan Austral.
+﻿ID;ESTADO;VERIFICADO;ORIGEN_GUION;FECHA HISTÓRICA;TITULAR;DATO CLAVE;FUENTE OFICIAL;TIPO DE VALOR;TEXTO FINAL INSTAGRAM;TEXTO FINAL X (TWITTER)
+1;PUBLICADO;SI;Lote Fundacional HDE;14 de junio de 1985;El nacimiento del Austral y el shock heterodoxo;Se quitaron tres ceros al Peso Argentino y se congelaron precios, tarifas y salarios de forma simultánea.;Decreto 1096/85 / BCRA;Reforma monetaria y desagio contractual;"En junio de 1985, con una inflación mensual que superaba el 30%, el ministro Juan Vital Sourrouille anunció por cadena nacional el Plan Austral.
 
 A diferencia de los ajustes ortodoxos tradicionales, el plan combinó compromiso de emisión cero con una tabla de 'desagio' para evitar que la inflación esperada destruyera los contratos vigentes.
 
@@ -14,7 +14,7 @@ A diferencia de los ajustes ortodoxos tradicionales, el plan combinó compromiso
 Se quitaron tres ceros al Peso Argentino y se congelaron precios, tarifas y salarios de forma simultánea.
 
 #HistoriaEconomica #Argentina"
-2;PUBLICADO;4 de junio de 1975;El Rodrigazo y el estallido inflacionario;El dólar comercial trepó un 100%, las tarifas aumentaron hasta 180% y los combustibles un 175%.;"El 4 de junio de 1975, Celestino Rodrigo asumió en Economía y lanzó un ajuste de shock brutal para corregir el atraso tarifario y el déficit fiscal tras el colapso del Pacto Social.
+2;PUBLICADO;SI;Lote Fundacional HDE;4 de junio de 1975;El Rodrigazo y el estallido inflacionario;El dólar comercial trepó un 100%, las tarifas aumentaron hasta 180% y los combustibles un 175%.;Ministerio de Economía / INDEC;Variación % de precios y tarifas públicas;"El 4 de junio de 1975, Celestino Rodrigo asumió en Economía y lanzó un ajuste de shock brutal para corregir el atraso tarifario y el déficit fiscal tras el colapso del Pacto Social.
 
 El impacto fue demoledor: la inflación anual superó el 300%, se desataron huelgas generales y comenzó una nueva etapa de inestabilidad macroeconómica en el país.
 
@@ -29,7 +29,7 @@ El impacto fue demoledor: la inflación anual superó el 300%, se desataron huel
 El dólar comercial trepó un 100%, las tarifas aumentaron hasta 180% y los combustibles un 175%.
 
 #HistoriaEconomica #Argentina"
-3;PUBLICADO;20 de diciembre de 1978;La Tablita cambiaria de Martínez de Hoz;Un cronograma de devaluaciones preanunciadas que incentivó la 'bicicleta financiera'.;"A fines de 1978, el ministro José Alfredo Martínez de Hoz implementó la pauta cambiaria conocida popularmente como 'la tablita'.
+3;PUBLICADO;SI;Lote Fundacional HDE;20 de diciembre de 1978;La Tablita cambiaria de Martínez de Hoz;Un cronograma de devaluaciones preanunciadas que incentivó la 'bicicleta financiera'.;BCRA Comunicación A / Min. Economía;Pauta cambiaria y tasa nominal mensual;"A fines de 1978, el ministro José Alfredo Martínez de Hoz implementó la pauta cambiaria conocida popularmente como 'la tablita'.
 
 El objetivo era anclar las expectativas devaluatorias, pero con una inflación interna muy superior a la pauta, el peso se sobrevaluó drásticamente, disparando el endeudamiento externo y las importaciones baratas ('deme dos').
 
@@ -44,7 +44,7 @@ El objetivo era anclar las expectativas devaluatorias, pero con una inflación i
 Un cronograma de devaluaciones preanunciadas que incentivó la 'bicicleta financiera'.
 
 #HistoriaEconomica #Argentina"
-4;PUBLICADO;28 de noviembre de 1982;La estatización de la deuda externa privada;El Estado absorbió más de 14.000 millones de dólares de pasivos de grandes empresas privadas.;"Hacia el final de la dictadura militar, a través de seguros de cambio instrumentados por el Banco Central, las deudas en dólares contraídas por empresas privadas fueron asumidas por el Estado nacional.
+4;PUBLICADO;SI;Lote Fundacional HDE;28 de noviembre de 1982;La estatización de la deuda externa privada;El Estado absorbió más de 14.000 millones de dólares de pasivos de grandes empresas privadas.;BCRA Comunicación A 137 / 251;Saldo de pasivos externos en USD;"Hacia el final de la dictadura militar, a través de seguros de cambio instrumentados por el Banco Central, las deudas en dólares contraídas por empresas privadas fueron asumidas por el Estado nacional.
 
 Esta medida transformó pasivos privados en deuda pública soberana, condicionando la economía argentina durante toda la década del 80.
 
@@ -59,7 +59,7 @@ Esta medida transformó pasivos privados en deuda pública soberana, condicionan
 El Estado absorbió más de 14.000 millones de dólares de pasivos de grandes empresas privadas.
 
 #HistoriaEconomica #Argentina"
-5;PUBLICADO;28 de diciembre de 1989;El Plan Bonex y el canje compulsivo;Se incautaron plazos fijos por bonos a 10 años para frenar la segunda hiperinflación.;"El 28 de diciembre de 1989, el ministro Erman González anunció la confiscación de depósitos a plazo fijo bancarios que superaban el millón de australes a cambio de bonos externos (Bonex 89) pagaderos en 1999.
+5;PUBLICADO;SI;Lote Fundacional HDE;28 de diciembre de 1989;El Plan Bonex y el canje compulsivo;Se incautaron plazos fijos por bonos a 10 años para frenar la segunda hiperinflación.;Decreto 36/90 / BCRA;Bonex serie 1989 en USD a 10 años;"El 28 de diciembre de 1989, el ministro Erman González anunció la confiscación de depósitos a plazo fijo bancarios que superaban el millón de australes a cambio de bonos externos (Bonex 89) pagaderos en 1999.
 
 La medida pulverizó la liquidez monetaria y redujo el déficit cuasifiscal del Banco Central de golpe, allanando el camino hacia las reformas de los 90.
 
@@ -74,7 +74,7 @@ La medida pulverizó la liquidez monetaria y redujo el déficit cuasifiscal del 
 Se incautaron plazos fijos por bonos a 10 años para frenar la segunda hiperinflación.
 
 #HistoriaEconomica #Argentina"
-6;PUBLICADO;27 de marzo de 1991;La sanción de la Ley de Convertibilidad;Se fijó por ley la paridad 1 a 1 entre el peso y el dólar, prohibiendo emitir sin reservas.;"El Congreso de la Nación aprobó la Ley 23.928 impulsada por Domingo Cavallo. La norma obligaba al Banco Central a respaldar el 100% de la base monetaria con reservas internacionales.
+6;PUBLICADO;SI;Lote Fundacional HDE;27 de marzo de 1991;La sanción de la Ley de Convertibilidad;Se fijó por ley la paridad 1 a 1 entre el peso y el dólar, prohibiendo emitir sin reservas.;Ley Nacional 23.928 / BCRA;Relación 1 USD = 10.000 Australes / 1 Peso;"El Congreso de la Nación aprobó la Ley 23.928 impulsada por Domingo Cavallo. La norma obligaba al Banco Central a respaldar el 100% de la base monetaria con reservas internacionales.
 
 Además, se prohibió cualquier mecanismo de indexación contractual. La convertibilidad logró frenar la hiperinflación casi de inmediato, inaugurando una década de estabilidad de precios.
 
@@ -89,7 +89,7 @@ Además, se prohibió cualquier mecanismo de indexación contractual. La convert
 Se fijó por ley la paridad 1 a 1 entre el peso y el dólar, prohibiendo emitir sin reservas.
 
 #HistoriaEconomica #Argentina"
-7;PENDIENTE;1 de diciembre de 2001;El anuncio del 'Corralito' bancario;Se limitó la extracción de dinero en efectivo a 250 pesos/dólares por semana.;"Ante una salida masiva de depósitos que amenazaba con vaciar las reservas del sistema bancario, el ministro Domingo Cavallo decretó restricciones drásticas al retiro de dinero en efectivo.
+7;PENDIENTE;SI;Lote Fundacional HDE;1 de diciembre de 2001;El anuncio del 'Corralito' bancario;Se limitó la extracción de dinero en efectivo a 250 pesos/dólares por semana.;Decreto 1570/2001 / BCRA;Límite semanal de extracción en efectivo;"Ante una salida masiva de depósitos que amenazaba con vaciar las reservas del sistema bancario, el ministro Domingo Cavallo decretó restricciones drásticas al retiro de dinero en efectivo.
 
 La medida asfixió la economía informal y desató un estallido social y político que culminó con la renuncia del presidente Fernando de la Rúa semanas después.
 
@@ -104,7 +104,7 @@ La medida asfixió la economía informal y desató un estallido social y políti
 Se limitó la extracción de dinero en efectivo a 250 pesos/dólares por semana.
 
 #HistoriaEconomica #Argentina"
-8;PENDIENTE;6 de enero de 2002;El fin de la Convertibilidad y la pesificación;El Congreso derogó la paridad cambiaria fija tras una década de vigencia.;"Bajo la presidencia de Eduardo Duhalde, se sancionó la Ley de Emergencia Pública y Reforma del Régimen Cambiario. La paridad 1 a 1 llegó a su fin formal.
+8;PENDIENTE;SI;Lote Fundacional HDE;6 de enero de 2002;El fin de la Convertibilidad y la pesificación;El Congreso derogó la paridad cambiaria fija tras una década de vigencia.;Ley 25.561 / BCRA;Pesificación asimétrica y flotación cambiaria;"Bajo la presidencia de Eduardo Duhalde, se sancionó la Ley de Emergencia Pública y Reforma del Régimen Cambiario. La paridad 1 a 1 llegó a su fin formal.
 
 Poco después se instauró la pesificación asimétrica: créditos a 1 a 1 y depósitos a 1,40 pesos más CER, lo que generó un masivo litigio judicial y una fuerte caída del salario real.
 
@@ -119,7 +119,7 @@ Poco después se instauró la pesificación asimétrica: créditos a 1 a 1 y dep
 El Congreso derogó la paridad cambiaria fija tras una década de vigencia.
 
 #HistoriaEconomica #Argentina"
-9;PENDIENTE;2 de junio de 1973;El Pacto Social de José Ber Gelbard;Acuerdo tripartito de precios y salarios congelados para frenar la inercia inflacionaria.;"Durante la presidencia de Cámpora y con el regreso de Perón, el ministro Gelbard selló un acuerdo histórico entre la CGT y la CGE: aumento salarial inicial del 20% seguido de un congelamiento total de precios por dos años.
+9;PENDIENTE;SI;Lote Fundacional HDE;2 de junio de 1973;El Pacto Social de José Ber Gelbard;Acuerdo tripartito de precios y salarios congelados para frenar la inercia inflacionaria.;Ministerio de Economía / CGE / CGT;Acta de congelamiento y tregua de precios;"Durante la presidencia de Cámpora y con el regreso de Perón, el ministro Gelbard selló un acuerdo histórico entre la CGT y la CGE: aumento salarial inicial del 20% seguido de un congelamiento total de precios por dos años.
 
 El plan redujo la inflación al principio, pero las distorsiones de precios relativos y el aumento del gasto público desbordaron el esquema en 1975.
 
@@ -134,7 +134,7 @@ El plan redujo la inflación al principio, pero las distorsiones de precios rela
 Acuerdo tripartito de precios y salarios congelados para frenar la inercia inflacionaria.
 
 #HistoriaEconomica #Argentina"
-10;PENDIENTE;1 de mayo de 1933;La firma del polémico Pacto Roca-Runciman;Gran Bretaña garantizó cupos de carne a cambio de privilegios fiscales y ferroviarios.;"En plena Gran Depresión, el vicepresidente Julio A. Roca (hijo) firmó en Londres el tratado de comercio con Walter Runciman para asegurar las exportaciones de carne enfriada británicas.
+10;PENDIENTE;SI;Lote Fundacional HDE;1 de mayo de 1933;La firma del polémico Pacto Roca-Runciman;Gran Bretaña garantizó cupos de carne a cambio de privilegios fiscales y ferroviarios.;Tratado Bilateral Anglo-Argentino 1933;Cuotas de exportación de carne enfriada;"En plena Gran Depresión, el vicepresidente Julio A. Roca (hijo) firmó en Londres el tratado de comercio con Walter Runciman para asegurar las exportaciones de carne enfriada británicas.
 
 A cambio, Argentina concedió exenciones aduaneras, trato preferencial al carbón inglés y el monopolio de transporte en Buenos Aires, generando un encendido debate sobre la soberanía económica.
 
@@ -149,7 +149,7 @@ A cambio, Argentina concedió exenciones aduaneras, trato preferencial al carbó
 Gran Bretaña garantizó cupos de carne a cambio de privilegios fiscales y ferroviarios.
 
 #HistoriaEconomica #Argentina"
-11;PENDIENTE;31 de mayo de 1935;La creación del Banco Central (BCRA);Nació como una entidad mixta impulsada por el economista británico Otto Niemeyer.;"Mediante la Ley 12.155 se fundó el Banco Central de la República Argentina, con Raúl Prebisch como su primer director general.
+11;PENDIENTE;SI;Lote Fundacional HDE;31 de mayo de 1935;La creación del Banco Central (BCRA);Nació como una entidad mixta impulsada por el economista británico Otto Niemeyer.;Leyes 12.155 a 12.160 / Misión Niemeyer;Capital mixto y encajes legales bancarios;"Mediante la Ley 12.155 se fundó el Banco Central de la República Argentina, con Raúl Prebisch como su primer director general.
 
 En su origen, el capital estaba compuesto mitad por el Estado y mitad por bancos privados nacionales y extranjeros, con la misión de regular el crédito y la moneda nacional tras el colapso de la Caja de Conversión.
 
@@ -164,7 +164,7 @@ En su origen, el capital estaba compuesto mitad por el Estado y mitad por bancos
 Nació como una entidad mixta impulsada por el economista británico Otto Niemeyer.
 
 #HistoriaEconomica #Argentina"
-12;PENDIENTE;16 de julio de 1890;La Revolución del Parque y la Baring Crisis;El primer gran default moderno de Argentina que casi quiebra a la banca londinense.;"El exceso de deuda externa tomada por el gobierno de Juárez Celman provocó una crisis financiera colosal en 1890. El Banco Baring Brothers de Londres estuvo al borde de la quiebra total.
+12;PENDIENTE;SI;Lote Fundacional HDE;16 de julio de 1890;La Revolución del Parque y la Baring Crisis;El primer gran default moderno de Argentina que casi quiebra a la banca londinense.;Archivo Histórico BCRA / Baring Brothers;Default de deuda soberana y quiebra bancaria;"El exceso de deuda externa tomada por el gobierno de Juárez Celman provocó una crisis financiera colosal en 1890. El Banco Baring Brothers de Londres estuvo al borde de la quiebra total.
 
 La crisis desembocó en el estallido armado de la Revolución del Parque, la renuncia presidencial y un plan de austeridad histórico encabezado por Carlos Pellegrini.
 
@@ -179,7 +179,7 @@ La crisis desembocó en el estallido armado de la Revolución del Parque, la ren
 El primer gran default moderno de Argentina que casi quiebra a la banca londinense.
 
 #HistoriaEconomica #Argentina"
-13;PENDIENTE;1 de enero de 1970;El debut del Peso Ley 18.188;Se eliminaron dos ceros a la moneda nacional: 100 pesos moneda nacional equivalían a 1 peso ley.;"Durante el gobierno de Onganía y bajo la gestión del ministro Krieger Vasena, entró en vigor el Peso Ley 18.188, reemplazando al Peso Moneda Nacional creado en 1881.
+13;PENDIENTE;SI;Lote Fundacional HDE;1 de enero de 1970;El debut del Peso Ley 18.188;Se eliminaron dos ceros a la moneda nacional: 100 pesos moneda nacional equivalían a 1 peso ley.;Ley 18.188 / BCRA;Quita de dos ceros al Peso Moneda Nacional;"Durante el gobierno de Onganía y bajo la gestión del ministro Krieger Vasena, entró en vigor el Peso Ley 18.188, reemplazando al Peso Moneda Nacional creado en 1881.
 
 Fue la primera de varias amputaciones de ceros que sufriría el signo monetario argentino a lo largo del siglo XX a causa del proceso inflacionario crónico.
 
@@ -194,7 +194,7 @@ Fue la primera de varias amputaciones de ceros que sufriría el signo monetario 
 Se eliminaron dos ceros a la moneda nacional: 100 pesos moneda nacional equivalían a 1 peso ley.
 
 #HistoriaEconomica #Argentina"
-14;PENDIENTE;1 de junio de 1983;La llegada del Peso Argentino ($a);Se quitaron cuatro ceros a la moneda: 10.000 pesos ley pasaron a ser 1 peso argentino.;"Hacia el final del régimen militar y con una inflación anual que rozaba el 400%, el Decreto Ley 22.707 creó el Peso Argentino ($a).
+14;PENDIENTE;NO;Lote Fundacional HDE;1 de junio de 1983;La llegada del Peso Argentino ($a);Se quitaron cuatro ceros a la moneda: 10.000 pesos ley pasaron a ser 1 peso argentino.;Decreto 2128/83 / BCRA;Quita de cuatro ceros al Peso Ley 18.188;"Hacia el final del régimen militar y con una inflación anual que rozaba el 400%, el Decreto Ley 22.707 creó el Peso Argentino ($a).
 
 Fue la moneda con menor vida útil de la historia nacional: duró apenas dos años hasta ser reemplazada por el Austral en junio de 1985.
 
@@ -209,7 +209,7 @@ Fue la moneda con menor vida útil de la historia nacional: duró apenas dos añ
 Se quitaron cuatro ceros a la moneda: 10.000 pesos ley pasaron a ser 1 peso argentino.
 
 #HistoriaEconomica #Argentina"
-15;PENDIENTE;3 de agosto de 1988;El Plan Primavera y el colapso final;Un desdoblamiento cambiario para contener precios previo a las elecciones de 1989.;"El gobierno de Alfonsín intentó revivir la estabilidad con el Plan Primavera: desdoblamiento del mercado cambiario (comercial y financiero), acuerdo de precios con la UIA y alza de tasas de interés.
+15;PENDIENTE;NO;Lote Fundacional HDE;3 de agosto de 1988;El Plan Primavera y el colapso final;Un desdoblamiento cambiario para contener precios previo a las elecciones de 1989.;BCRA / Ministerio de Economía;Desdoblamiento cambiario libre y comercial;"El gobierno de Alfonsín intentó revivir la estabilidad con el Plan Primavera: desdoblamiento del mercado cambiario (comercial y financiero), acuerdo de precios con la UIA y alza de tasas de interés.
 
 Sin embargo, la falta de apoyo del FMI y el drenaje constante de divisas provocó su quiebre en febrero de 1989, dando paso a la primera hiperinflación.
 
@@ -224,7 +224,7 @@ Sin embargo, la falta de apoyo del FMI y el drenaje constante de divisas provoc�
 Un desdoblamiento cambiario para contener precios previo a las elecciones de 1989.
 
 #HistoriaEconomica #Argentina"
-16;PENDIENTE;6 de febrero de 1989;El 'Lunes Negro' y el estallido de la hiper;El BCRA anunció que dejaba de vender dólares: la divisa se disparó 200% en pocos días.;"Aquel lunes de febrero de 1989, el Banco Central suspendió la intervención cambiaria al agotarse sus reservas internacionales operativas.
+16;PENDIENTE;NO;Lote Fundacional HDE;6 de febrero de 1989;El 'Lunes Negro' y el estallido de la hiper;El BCRA anunció que dejaba de vender dólares: la divisa se disparó 200% en pocos días.;INDEC / BCRA;Variación mensual del IPC (+197% julio 1989);"Aquel lunes de febrero de 1989, el Banco Central suspendió la intervención cambiaria al agotarse sus reservas internacionales operativas.
 
 El precio del dólar se disparó sin techo, provocando remarcaciones automáticas diarias de precios, desabastecimiento en góndolas y la renuncia anticipada de Raúl Alfonsín meses más tarde.
 
@@ -239,7 +239,7 @@ El precio del dólar se disparó sin techo, provocando remarcaciones automática
 El BCRA anunció que dejaba de vender dólares: la divisa se disparó 200% en pocos días.
 
 #HistoriaEconomica #Argentina"
-17;PENDIENTE;24 de noviembre de 1992;El Pacto Fiscal y la coparticipación;Las provincias cedieron el 15% de la masa coparticipable para financiar el sistema previsional.;"La Nación y las provincias firmaron el primer Pacto Fiscal para garantizar el equilibrio presupuestario de la Convertibilidad y sostener el déficit de la seguridad social.
+17;PENDIENTE;NO;Lote Fundacional HDE;24 de noviembre de 1992;El Pacto Fiscal y la coparticipación;Las provincias cedieron el 15% de la masa coparticipable para financiar el sistema previsional.;Ley 24.130 / Ministerio de Economía;Detracción del 15% de coparticipación para ANSES;"La Nación y las provincias firmaron el primer Pacto Fiscal para garantizar el equilibrio presupuestario de la Convertibilidad y sostener el déficit de la seguridad social.
 
 Este acuerdo sentó las bases de los conflictos tributarios federales y la postergada ley de coparticipación ordenada por la Constitución de 1994 que aún sigue pendiente.
 
@@ -254,7 +254,7 @@ Este acuerdo sentó las bases de los conflictos tributarios federales y la poste
 Las provincias cedieron el 15% de la masa coparticipable para financiar el sistema previsional.
 
 #HistoriaEconomica #Argentina"
-18;PENDIENTE;13 de julio de 1994;La creación de las AFJP y el sistema mixto;Se privatizó parcialmente la gestión de los aportes jubilatorios mediante capitalización.;"Bajo la presidencia de Menem se promulgó la Ley 24.241 que creó las Administradoras de Fondos de Jubilaciones y Pensiones (AFJP).
+18;PENDIENTE;NO;Lote Fundacional HDE;13 de julio de 1994;La creación de las AFJP y el sistema mixto;Se privatizó parcialmente la gestión de los aportes jubilatorios mediante capitalización.;Ley 24.241 / SAFJP;Aporte previsional obligatorio de capitalización;"Bajo la presidencia de Menem se promulgó la Ley 24.241 que creó las Administradoras de Fondos de Jubilaciones y Pensiones (AFJP).
 
 Los trabajadores podían elegir entre el reparto estatal y cuentas de ahorro individual administradas por bancos y compañías financieras, sistema que rigió hasta su reestatización en 2008.
 
@@ -269,7 +269,7 @@ Los trabajadores podían elegir entre el reparto estatal y cuentas de ahorro ind
 Se privatizó parcialmente la gestión de los aportes jubilatorios mediante capitalización.
 
 #HistoriaEconomica #Argentina"
-19;PENDIENTE;14 de enero de 1995;El Efecto Tequila sacude al sistema bancario;La corrida bancaria provocó la salida del 18% de los depósitos totales del país.;"Tras la devaluación del peso mexicano a fines de 1994, una ola de desconfianza azotó a los mercados emergentes. En Argentina, la convertibilidad enfrentó su primera gran prueba de fuego.
+19;PENDIENTE;NO;Lote Fundacional HDE;14 de enero de 1995;El Efecto Tequila sacude al sistema bancario;La corrida bancaria provocó la salida del 18% de los depósitos totales del país.;BCRA / Banco Mundial;Fuga de depósitos del 18% del sistema bancario;"Tras la devaluación del peso mexicano a fines de 1994, una ola de desconfianza azotó a los mercados emergentes. En Argentina, la convertibilidad enfrentó su primera gran prueba de fuego.
 
 Cerraron decenas de bancos cooperativos y provinciales, y el gobierno debió crear fondos fiduciarios de rescate para evitar el derrumbe de la paridad 1 a 1.
 
@@ -284,7 +284,7 @@ Cerraron decenas de bancos cooperativos y provinciales, y el gobierno debió cre
 La corrida bancaria provocó la salida del 18% de los depósitos totales del país.
 
 #HistoriaEconomica #Argentina"
-20;PENDIENTE;18 de diciembre de 2000;El 'Blindaje' financiero de De la Rúa;Un paquete de asistencia internacional por casi 40.000 millones de dólares liderado por el FMI.;"El presidente Fernando de la Rúa anunció por cadena nacional el blindaje financiero con el objetivo de calmar el riesgo país y refinanciar vencimientos de deuda externa.
+20;PENDIENTE;NO;Lote Fundacional HDE;18 de diciembre de 2000;El 'Blindaje' financiero de De la Rúa;Un paquete de asistencia internacional por casi 40.000 millones de dólares liderado por el FMI.;FMI / BCRA / Min. Economía;Paquete de crédito internacional en USD;"El presidente Fernando de la Rúa anunció por cadena nacional el blindaje financiero con el objetivo de calmar el riesgo país y refinanciar vencimientos de deuda externa.
 
 A cambio de los fondos, el gobierno se comprometió al déficit cero y al congelamiento del gasto primario, pero la recesión económica no dio tregua.
 
@@ -299,7 +299,7 @@ A cambio de los fondos, el gobierno se comprometió al déficit cero y al congel
 Un paquete de asistencia internacional por casi 40.000 millones de dólares liderado por el FMI.
 
 #HistoriaEconomica #Argentina"
-21;PENDIENTE;4 de junio de 2001;El 'Megacanje' de deuda pública;Se canjearon títulos por 30.000 millones de dólares para postergar pagos a tasas siderales.;"Conducido por Domingo Cavallo y David Mulford, el Megacanje buscó oxígeno financiero pateando vencimientos de deuda a cambio de tasas de interés de hasta el 16% anual en dólares.
+21;PENDIENTE;NO;Lote Fundacional HDE;4 de junio de 2001;El 'Megacanje' de deuda pública;Se canjearon títulos por 30.000 millones de dólares para postergar pagos a tasas siderales.;Decreto 648/2001 / Secretaría de Finanzas;Pagarés soberanos canjeados y tasa de interés;"Conducido por Domingo Cavallo y David Mulford, el Megacanje buscó oxígeno financiero pateando vencimientos de deuda a cambio de tasas de interés de hasta el 16% anual en dólares.
 
 El alivio de corto plazo incrementó el stock total de deuda, provocando investigaciones judiciales y profundizando el camino hacia el default de diciembre de ese año.
 
@@ -314,7 +314,7 @@ El alivio de corto plazo incrementó el stock total de deuda, provocando investi
 Se canjearon títulos por 30.000 millones de dólares para postergar pagos a tasas siderales.
 
 #HistoriaEconomica #Argentina"
-22;PENDIENTE;23 de diciembre de 2001;La declaración del mayor default soberano;Rodríguez Saá anunció en el Congreso la cesación de pagos sobre 100.000 millones de dólares.;"En su discurso inaugural ante la Asamblea Legislativa, el presidente interino Adolfo Rodríguez Saá anunció la suspensión de pagos de la deuda externa soberana ante la ovación de los legisladores.
+22;PENDIENTE;NO;Lote Fundacional HDE;23 de diciembre de 2001;La declaración del mayor default soberano;Rodríguez Saá anunció en el Congreso la cesación de pagos sobre 100.000 millones de dólares.;Congreso de la Nación / Ley 25.563;Suspensión de pagos de deuda externa en USD;"En su discurso inaugural ante la Asamblea Legislativa, el presidente interino Adolfo Rodríguez Saá anunció la suspensión de pagos de la deuda externa soberana ante la ovación de los legisladores.
 
 Fue el mayor default de la historia moderna hasta ese momento, marginando a la Argentina del crédito voluntario internacional durante más de una década.
 
@@ -329,7 +329,7 @@ Fue el mayor default de la historia moderna hasta ese momento, marginando a la A
 Rodríguez Saá anunció en el Congreso la cesación de pagos sobre 100.000 millones de dólares.
 
 #HistoriaEconomica #Argentina"
-23;PENDIENTE;25 de abril de 2002;El estallido de las cuasimonedas y los Patacones;Los bonos provinciales llegaron a representar un tercio del dinero circulante del país.;"Ante la falta total de liquidez en pesos tras la caída de la convertibilidad, el gobierno bonaerense y otras 14 provincias emitieron bonos para pagar sueldos públicos: Patacones, Lecop, Quebrachos y Federales.
+23;PENDIENTE;NO;Lote Fundacional HDE;25 de abril de 2002;El estallido de las cuasimonedas y los Patacones;Los bonos provinciales llegaron a representar un tercio del dinero circulante del país.;Ley Pcia. Bs. As. 12.727 / BCRA;Bonos de cancelación de deuda al portador;"Ante la falta total de liquidez en pesos tras la caída de la convertibilidad, el gobierno bonaerense y otras 14 provincias emitieron bonos para pagar sueldos públicos: Patacones, Lecop, Quebrachos y Federales.
 
 Los comercios los aceptaban con descuento y cotizaban en pizarras paralelas hasta que fueron rescatados por el gobierno nacional a fines de 2003.
 
@@ -344,7 +344,7 @@ Los comercios los aceptaban con descuento y cotizaban en pizarras paralelas hast
 Los bonos provinciales llegaron a representar un tercio del dinero circulante del país.
 
 #HistoriaEconomica #Argentina"
-24;PENDIENTE;14 de enero de 2005;El primer gran canje de deuda de Lavagna;Se reestructuraron 81.800 millones de dólares con una quita nominal histórica de hasta 65%.;"El ministro Roberto Lavagna y el secretario Guillermo Nielsen lanzaron la oferta de reestructuración para salir del default de 2001. La aceptación alcanzó el 76% entre los tenedores de bonos.
+24;PENDIENTE;NO;Lote Fundacional HDE;14 de enero de 2005;El primer gran canje de deuda de Lavagna;Se reestructuraron 81.800 millones de dólares con una quita nominal histórica de hasta 65%.;Decreto 1735/2004 / Min. Economía;Quita nominal del 65% y bonos par/discount;"El ministro Roberto Lavagna y el secretario Guillermo Nielsen lanzaron la oferta de reestructuración para salir del default de 2001. La aceptación alcanzó el 76% entre los tenedores de bonos.
 
 Quienes no aceptaron la oferta (los 'holdouts') iniciaron juicios internacionales en Nueva York que derivarían en el recordado conflicto de los Fondos Buitre.
 
@@ -359,7 +359,7 @@ Quienes no aceptaron la oferta (los 'holdouts') iniciaron juicios internacionale
 Se reestructuraron 81.800 millones de dólares con una quita nominal histórica de hasta 65%.
 
 #HistoriaEconomica #Argentina"
-25;PENDIENTE;3 de enero de 2006;La cancelación total de la deuda con el FMI;Argentina pagó al contado 9.810 millones de dólares utilizando reservas del Banco Central.;"Bajo la presidencia de Néstor Kirchner, Argentina saldó toda su deuda pendiente con el Fondo Monetario Internacional en un único pago en efectivo.
+25;PENDIENTE;NO;Lote Fundacional HDE;3 de enero de 2006;La cancelación total de la deuda con el FMI;Argentina pagó al contado 9.810 millones de dólares utilizando reservas del Banco Central.;Decreto 1599/2005 / BCRA;Pago único de reservas internacionales en USD;"Bajo la presidencia de Néstor Kirchner, Argentina saldó toda su deuda pendiente con el Fondo Monetario Internacional en un único pago en efectivo.
 
 El objetivo político y económico fue ganar autonomía en la toma de decisiones macroeconómicas sin auditorías periódicas del organismo, emulando la medida tomada por Brasil días antes.
 
@@ -374,7 +374,7 @@ El objetivo político y económico fue ganar autonomía en la toma de decisiones
 Argentina pagó al contado 9.810 millones de dólares utilizando reservas del Banco Central.
 
 #HistoriaEconomica #Argentina"
-26;PENDIENTE;29 de enero de 2007;La polémica intervención del INDEC;El desplazamiento de técnicos históricos desató una década de desconfianza estadística.;"Con el arribo de interventores afines a la Secretaría de Comercio de Guillermo Moreno, se modificó la metodología de medición del Índice de Precios al Consumidor (IPC).
+26;PENDIENTE;NO;Lote Fundacional HDE;29 de enero de 2007;La polémica intervención del INDEC;El desplazamiento de técnicos históricos desató una década de desconfianza estadística.;Decreto 100/2007 / Min. Economía;Metodología de cálculo IPC GBA;"Con el arribo de interventores afines a la Secretaría de Comercio de Guillermo Moreno, se modificó la metodología de medición del Índice de Precios al Consumidor (IPC).
 
 La brecha entre la inflación oficial y las mediciones privadas superó los 15 puntos porcentuales anuales, afectando los bonos atados a inflación (CER) y las negociaciones paritarias.
 
@@ -389,7 +389,7 @@ La brecha entre la inflación oficial y las mediciones privadas superó los 15 p
 El desplazamiento de técnicos históricos desató una década de desconfianza estadística.
 
 #HistoriaEconomica #Argentina"
-27;PENDIENTE;11 de marzo de 2008;La Resolución 125 y las retenciones móviles;El esquema elevaba las retenciones a la soja hasta un 44% con precios internacionales récord.;"El ministro de Economía Martín Lousteau firmó la Resolución 125 para fijar alícuotas móviles a la exportación de granos según su cotización internacional.
+27;PENDIENTE;NO;Lote Fundacional HDE;11 de marzo de 2008;La Resolución 125 y las retenciones móviles;El esquema elevaba las retenciones a la soja hasta un 44% con precios internacionales récord.;Resolución 125/2008 Min. Economía;Alícuota móvil de retenciones a la soja;"El ministro de Economía Martín Lousteau firmó la Resolución 125 para fijar alícuotas móviles a la exportación de granos según su cotización internacional.
 
 La medida desató un paro agropecuario histórico de más de 100 días, cortes de ruta y un conflicto político que culminó con el recordado voto 'no positivo' del vicepresidente Julio Cobos.
 
@@ -404,7 +404,7 @@ La medida desató un paro agropecuario histórico de más de 100 días, cortes d
 El esquema elevaba las retenciones a la soja hasta un 44% con precios internacionales récord.
 
 #HistoriaEconomica #Argentina"
-28;PENDIENTE;20 de noviembre de 2008;La estatización de las AFJP y el FGS;Los fondos privados de pensión fueron absorbidos por la ANSES para crear el FGS.;"En medio de la crisis financiera global subprime, el Congreso sancionó la estatización del sistema previsional privado, dando fin a 14 años de régimen de capitalización.
+28;PENDIENTE;NO;Lote Fundacional HDE;20 de noviembre de 2008;La estatización de las AFJP y el FGS;Los fondos privados de pensión fueron absorbidos por la ANSES para crear el FGS.;Ley 26.425 / ANSES;Transferencia de activos del régimen de capitalización;"En medio de la crisis financiera global subprime, el Congreso sancionó la estatización del sistema previsional privado, dando fin a 14 años de régimen de capitalización.
 
 La ANSES pasó a administrar las carteras de acciones que las AFJP tenían en empresas líderes del país, obteniendo representación en sus directorios.
 
@@ -419,7 +419,7 @@ La ANSES pasó a administrar las carteras de acciones que las AFJP tenían en em
 Los fondos privados de pensión fueron absorbidos por la ANSES para crear el FGS.
 
 #HistoriaEconomica #Argentina"
-29;PENDIENTE;28 de octubre de 2011;La instauración del primer 'Cepo Cambiario';La AFIP comenzó a validar las compras de dólares según la capacidad contributiva declarada.;"Apenas días después de la reelección de Cristina Fernández de Kirchner, se implementó el Programa de Consulta de Operaciones Cambiarias para frenar el drenaje de reservas.
+29;PENDIENTE;NO;Lote Fundacional HDE;28 de octubre de 2011;La instauración del primer 'Cepo Cambiario';La AFIP comenzó a validar las compras de dólares según la capacidad contributiva declarada.;AFIP Resolución 3210/11 / BCRA;Validación fiscal previa para compra de USD;"Apenas días después de la reelección de Cristina Fernández de Kirchner, se implementó el Programa de Consulta de Operaciones Cambiarias para frenar el drenaje de reservas.
 
 La medida dio origen a la brecha cambiaria moderna, al resurgimiento del mercado informal ('dólar blue') y a restricciones a las compras con tarjeta en el exterior.
 
@@ -434,7 +434,7 @@ La medida dio origen a la brecha cambiaria moderna, al resurgimiento del mercado
 La AFIP comenzó a validar las compras de dólares según la capacidad contributiva declarada.
 
 #HistoriaEconomica #Argentina"
-30;PENDIENTE;16 de abril de 2012;La expropiación del 51% de YPF;El Estado argentino tomó el control de la petrolera de manos del grupo español Repsol.;"El gobierno nacional anunció la expropiación de las acciones de Repsol en YPF bajo el argumento del vaciamiento de reservas hidrocarburíferas y la pérdida del autoabastecimiento energético.
+30;PENDIENTE;NO;Lote Fundacional HDE;16 de abril de 2012;La expropiación del 51% de YPF;El Estado argentino tomó el control de la petrolera de manos del grupo español Repsol.;Ley 26.741 / Congreso de la Nación;Declaración de interés público del 51% accionario;"El gobierno nacional anunció la expropiación de las acciones de Repsol en YPF bajo el argumento del vaciamiento de reservas hidrocarburíferas y la pérdida del autoabastecimiento energético.
 
 La estatización derivó en un acuerdo indemnizatorio con Repsol en 2014 y un litigio multimillonario en tribunales de Nueva York con fondos demandantes que continúa hoy.
 
@@ -449,7 +449,7 @@ La estatización derivó en un acuerdo indemnizatorio con Repsol en 2014 y un li
 El Estado argentino tomó el control de la petrolera de manos del grupo español Repsol.
 
 #HistoriaEconomica #Argentina"
-31;PENDIENTE;23 de enero de 2014;La devaluación de Kicillof en 48 horas;El dólar oficial saltó de 6,80 a 8 pesos en dos jornadas para proteger reservas del BCRA.;"Bajo la gestión del ministro Axel Kicillof y Juan Carlos Fábrega en el BCRA, el gobierno convalidó un salto del 18% en el tipo de cambio oficial para frenar la sangría de divisas.
+31;PENDIENTE;NO;Lote Fundacional HDE;23 de enero de 2014;La devaluación de Kicillof en 48 horas;El dólar oficial saltó de 6,80 a 8 pesos en dos jornadas para proteger reservas del BCRA.;BCRA Comunicación A / Min. Economía;Variación del tipo de cambio oficial mayorista;"Bajo la gestión del ministro Axel Kicillof y Juan Carlos Fábrega en el BCRA, el gobierno convalidó un salto del 18% en el tipo de cambio oficial para frenar la sangría de divisas.
 
 Fue la devaluación más marcada desde 2002, e inauguró el recargo del 35% a cuenta de Ganancias y el cupo mensual para compra de dólar ahorro.
 
@@ -464,7 +464,7 @@ Fue la devaluación más marcada desde 2002, e inauguró el recargo del 35% a cu
 El dólar oficial saltó de 6,80 a 8 pesos en dos jornadas para proteger reservas del BCRA.
 
 #HistoriaEconomica #Argentina"
-32;PENDIENTE;16 de junio de 2014;El fallo de Griesa a favor de los Fondos Buitre;La Corte Suprema de EE.UU. rechazó la apelación argentina, ratificando la cláusula 'pari passu'.;"El juez Thomas Griesa de Nueva York ordenó que Argentina debía pagar 1.330 millones de dólares en efectivo a fondos litigantes (NML Capital) al mismo tiempo que pagaba a bonistas del canje.
+32;PENDIENTE;NO;Lote Fundacional HDE;16 de junio de 2014;El fallo de Griesa a favor de los Fondos Buitre;La Corte Suprema de EE.UU. rechazó la apelación argentina, ratificando la cláusula 'pari passu'.;Corte del Distrito Sur de NY / Juez Griesa;Cláusula Pari Passu y sentencia en USD;"El juez Thomas Griesa de Nueva York ordenó que Argentina debía pagar 1.330 millones de dólares en efectivo a fondos litigantes (NML Capital) al mismo tiempo que pagaba a bonistas del canje.
 
 La negativa a pagar desencadenó el denominado 'default técnico' o 'Griesafest', trabando pagos internacionales en el Bank of New York.
 
@@ -479,7 +479,7 @@ La negativa a pagar desencadenó el denominado 'default técnico' o 'Griesafest'
 La Corte Suprema de EE.UU. rechazó la apelación argentina, ratificando la cláusula 'pari passu'.
 
 #HistoriaEconomica #Argentina"
-33;PENDIENTE;16 de diciembre de 2015;Prat-Gay anuncia el fin del cepo cambiario;Se unificó el tipo de cambio y el dólar oficial subió un 40% en un solo día.;"A una semana de asumir la presidencia de Mauricio Macri, el ministro Alfonso Prat-Gay anunció el levantamiento de las restricciones cambiarias impuestas en 2011.
+33;PENDIENTE;NO;Lote Fundacional HDE;16 de diciembre de 2015;Prat-Gay anuncia el fin del cepo cambiario;Se unificó el tipo de cambio y el dólar oficial subió un 40% en un solo día.;BCRA Comunicación A 5850;Unificación cambiaria y flotación del peso;"A una semana de asumir la presidencia de Mauricio Macri, el ministro Alfonso Prat-Gay anunció el levantamiento de las restricciones cambiarias impuestas en 2011.
 
 El dólar saltó de 9,80 a 13,90 pesos, pero la brecha cambiaria desapareció transitoriamente gracias a un préstamo repo de bancos internacionales para fortalecer reservas.
 
@@ -494,7 +494,7 @@ El dólar saltó de 9,80 a 13,90 pesos, pero la brecha cambiaria desapareció tr
 Se unificó el tipo de cambio y el dólar oficial subió un 40% en un solo día.
 
 #HistoriaEconomica #Argentina"
-34;PENDIENTE;19 de junio de 2017;La emisión del insólito bono a 100 años;Argentina colocó 2.750 millones de dólares con vencimiento en el año 2117 a una tasa del 7,9%.;"El ministro de Finanzas Luis Caputo colocó un bono soberano a un siglo de plazo en los mercados internacionales, un instrumento inédito en la historia de la deuda latinoamericana.
+34;PENDIENTE;NO;Lote Fundacional HDE;19 de junio de 2017;La emisión del insólito bono a 100 años;Argentina colocó 2.750 millones de dólares con vencimiento en el año 2117 a una tasa del 7,9%.;Resolución 97-E/2017 Min. Finanzas;Bono soberano en USD con cupón 7,125% anual;"El ministro de Finanzas Luis Caputo colocó un bono soberano a un siglo de plazo en los mercados internacionales, un instrumento inédito en la historia de la deuda latinoamericana.
 
 El bono despertó elogios por el plazo extendido de financiamiento pero duras críticas por la tasa convalidada, siendo luego reestructurado en el canje de 2020.
 
@@ -509,7 +509,7 @@ El bono despertó elogios por el plazo extendido de financiamiento pero duras cr
 Argentina colocó 2.750 millones de dólares con vencimiento en el año 2117 a una tasa del 7,9%.
 
 #HistoriaEconomica #Argentina"
-35;PENDIENTE;8 de mayo de 2018;Macri anuncia el regreso al FMI;Un préstamo stand-by récord que trepó hasta los 57.000 millones de dólares.;"Tras la corrida cambiaria que disparó el dólar de 20 a 25 pesos y cortó el crédito voluntario de Wall Street, el presidente Macri anunció negociaciones con Christine Lagarde en el FMI.
+35;PENDIENTE;NO;Lote Fundacional HDE;8 de mayo de 2018;Macri anuncia el regreso al FMI;Un préstamo stand-by récord que trepó hasta los 57.000 millones de dólares.;Acuerdo Stand-By FMI / Carta de Intención;Línea de crédito por 57.000 millones de USD;"Tras la corrida cambiaria que disparó el dólar de 20 a 25 pesos y cortó el crédito voluntario de Wall Street, el presidente Macri anunció negociaciones con Christine Lagarde en el FMI.
 
 Fue el mayor crédito en la historia del organismo multilateral, condicionado a un duro ajuste del déficit fiscal primario.
 
@@ -524,7 +524,7 @@ Fue el mayor crédito en la historia del organismo multilateral, condicionado a 
 Un préstamo stand-by récord que trepó hasta los 57.000 millones de dólares.
 
 #HistoriaEconomica #Argentina"
-36;PENDIENTE;28 de agosto de 2019;El reperfilamiento de deuda de Lacunza;Se postergó unilateralmente el pago de Letras del Tesoro (Letes y Lecaps) en pesos y dólares.;"Tras el resultado de las PASO de 2019 y la disparada del dólar a 60 pesos, el nuevo ministro Hernán Lacunza anunció la extensión forzosa de los vencimientos de deuda de corto plazo.
+36;PENDIENTE;NO;Lote Fundacional HDE;28 de agosto de 2019;El reperfilamiento de deuda de Lacunza;Se postergó unilateralmente el pago de Letras del Tesoro (Letes y Lecaps) en pesos y dólares.;Decreto 596/2019 / Min. Hacienda;Postergación de vencimientos de letras de corto plazo;"Tras el resultado de las PASO de 2019 y la disparada del dólar a 60 pesos, el nuevo ministro Hernán Lacunza anunció la extensión forzosa de los vencimientos de deuda de corto plazo.
 
 Fue la primera vez que se postergaba compulsivamente el pago de títulos de deuda nominados en moneda local (pesos) en la historia democrática reciente.
 
@@ -539,7 +539,7 @@ Fue la primera vez que se postergaba compulsivamente el pago de títulos de deud
 Se postergó unilateralmente el pago de Letras del Tesoro (Letes y Lecaps) en pesos y dólares.
 
 #HistoriaEconomica #Argentina"
-37;PENDIENTE;1 de septiembre de 2019;El regreso del cepo cambiario de 200 dólares;El gobierno de Macri reintrodujo el control de cambios limitando la compra a particulares.;"Mediante el DNU 596/2019, y tras una pérdida de 3.000 millones de dólares de reservas en dos semanas, el gobierno fijó un tope inicial de 10.000 dólares mensuales, que luego se redujo drásticamente a 200 dólares.
+37;PENDIENTE;NO;Lote Fundacional HDE;1 de septiembre de 2019;El regreso del cepo cambiario de 200 dólares;El gobierno de Macri reintrodujo el control de cambios limitando la compra a particulares.;BCRA Comunicación A 6815;Límite mensual para compra de moneda extranjera;"Mediante el DNU 596/2019, y tras una pérdida de 3.000 millones de dólares de reservas en dos semanas, el gobierno fijó un tope inicial de 10.000 dólares mensuales, que luego se redujo drásticamente a 200 dólares.
 
 Esta medida marcó el regreso definitivo de los controles cambiarios que continuarían durante los gobiernos posteriores.
 
@@ -554,7 +554,7 @@ Esta medida marcó el regreso definitivo de los controles cambiarios que continu
 El gobierno de Macri reintrodujo el control de cambios limitando la compra a particulares.
 
 #HistoriaEconomica #Argentina"
-38;PENDIENTE;4 de agosto de 2020;El acuerdo de reestructuración de Guzmán;Canje de bonos bajo ley extranjera por 66.000 millones de dólares con 54,8% de quita promedio.;"En plena cuarentena por la pandemia de COVID-19, el ministro Martín Guzmán anunció el cierre del acuerdo con los comités de acreedores privados liderados por BlackRock.
+38;PENDIENTE;NO;Lote Fundacional HDE;4 de agosto de 2020;El acuerdo de reestructuración de Guzmán;Canje de bonos bajo ley extranjera por 66.000 millones de dólares con 54,8% de quita promedio.;Decreto 676/2020 / Min. Economía;Canje de bonos bajo legislación extranjera;"En plena cuarentena por la pandemia de COVID-19, el ministro Martín Guzmán anunció el cierre del acuerdo con los comités de acreedores privados liderados por BlackRock.
 
 El acuerdo redujo cupones de interés del 7% al 3% anual promedio, aunque no logró bajar el riesgo país de forma sostenible en los años subsiguientes.
 
@@ -569,7 +569,7 @@ El acuerdo redujo cupones de interés del 7% al 3% anual promedio, aunque no log
 Canje de bonos bajo ley extranjera por 66.000 millones de dólares con 54,8% de quita promedio.
 
 #HistoriaEconomica #Argentina"
-39;PENDIENTE;15 de septiembre de 2020;El recargo del 35% y el supercepo;Se computaron las compras de streaming (Netflix, Spotify) dentro del cupo de 200 dólares.;"El Banco Central y la AFIP endurecieron el control de cambios imponiendo una percepción del 35% a cuenta de Ganancias sobre consumos en dólares.
+39;PENDIENTE;NO;Lote Fundacional HDE;15 de septiembre de 2020;El recargo del 35% y el supercepo;Se computaron las compras de streaming (Netflix, Spotify) dentro del cupo de 200 dólares.;AFIP RG 4815/20 / BCRA Com. A 7106;Percepción a cuenta de Ganancias sobre el dólar;"El Banco Central y la AFIP endurecieron el control de cambios imponiendo una percepción del 35% a cuenta de Ganancias sobre consumos en dólares.
 
 Además, obligaron a las empresas privadas a refinanciar el 60% de sus deudas financieras en el exterior al restringirles el acceso al Mercado Único y Libre de Cambios.
 
@@ -584,7 +584,7 @@ Además, obligaron a las empresas privadas a refinanciar el 60% de sus deudas fi
 Se computaron las compras de streaming (Netflix, Spotify) dentro del cupo de 200 dólares.
 
 #HistoriaEconomica #Argentina"
-40;PENDIENTE;2 de julio de 2022;La renuncia intempestiva de Martín Guzmán;Una carta de 7 páginas en Twitter desató una crisis cambiaria con récord del dólar blue.;"Mientras la vicepresidenta Cristina Kirchner encabezaba un acto en Ensenada, el ministro Guzmán presentó su renuncia indeclinable por redes sociales.
+40;PENDIENTE;NO;Lote Fundacional HDE;2 de julio de 2022;La renuncia intempestiva de Martín Guzmán;Una carta de 7 páginas en Twitter desató una crisis cambiaria con récord del dólar blue.;Ministerio de Economía / BCRA;Cotización libre del CCL y brecha cambiaria;"Mientras la vicepresidenta Cristina Kirchner encabezaba un acto en Ensenada, el ministro Guzmán presentó su renuncia indeclinable por redes sociales.
 
 La incertidumbre política desató corridas en los bonos en pesos, la designación fugaz de Silvina Batakis por 24 días y el salto del dólar informal de 239 a más de 330 pesos.
 
@@ -599,7 +599,7 @@ La incertidumbre política desató corridas en los bonos en pesos, la designaci�
 Una carta de 7 páginas en Twitter desató una crisis cambiaria con récord del dólar blue.
 
 #HistoriaEconomica #Argentina"
-41;PENDIENTE;4 de septiembre de 2022;El debut del 'Dólar Soja' de Sergio Massa;Un tipo de cambio diferencial de 200 pesos para liquidar granos acumuló 8.000 millones de USD.;"Para recomponer las reservas netas negativas del BCRA, el nuevo ministro de Economía Sergio Massa lanzó el Programa de Incremento Exportador.
+41;PENDIENTE;NO;Lote Fundacional HDE;4 de septiembre de 2022;El debut del 'Dólar Soja' de Sergio Massa;Un tipo de cambio diferencial de 200 pesos para liquidar granos acumuló 8.000 millones de USD.;Decreto 576/2022 / Programa PIE;Tipo de cambio diferencial temporal en pesos;"Para recomponer las reservas netas negativas del BCRA, el nuevo ministro de Economía Sergio Massa lanzó el Programa de Incremento Exportador.
 
 El mecanismo permitió al agro liquidar con una cotización superior al dólar oficial, pero implicó una fuerte emisión monetaria por la diferencia pagada por el Banco Central.
 
@@ -614,7 +614,7 @@ El mecanismo permitió al agro liquidar con una cotización superior al dólar o
 Un tipo de cambio diferencial de 200 pesos para liquidar granos acumuló 8.000 millones de USD.
 
 #HistoriaEconomica #Argentina"
-42;PENDIENTE;13 de diciembre de 2023;La devaluación del 118% y el shock fiscal;El dólar oficial subió de 366 a 800 pesos en la primera semana de Javier Milei.;"El ministro Luis Caputo anunció un paquete de 10 medidas de emergencia económica que incluyó una devaluación del 118%, recorte de subsidios energéticos y suspensión de la obra pública.
+42;PENDIENTE;NO;Lote Fundacional HDE;13 de diciembre de 2023;La devaluación del 118% y el shock fiscal;El dólar oficial subió de 366 a 800 pesos en la primera semana de Javier Milei.;BCRA Comunicación A 7918 / Min. Economía;Ajuste del tipo de cambio oficial a 800 pesos;"El ministro Luis Caputo anunció un paquete de 10 medidas de emergencia económica que incluyó una devaluación del 118%, recorte de subsidios energéticos y suspensión de la obra pública.
 
 El objetivo central fue alcanzar el superávit fiscal y financiero primario inmediato ('déficit cero') para erradicar la emisión monetaria del BCRA.
 
@@ -629,7 +629,7 @@ El objetivo central fue alcanzar el superávit fiscal y financiero primario inme
 El dólar oficial subió de 366 a 800 pesos en la primera semana de Javier Milei.
 
 #HistoriaEconomica #Argentina"
-43;PENDIENTE;12 de marzo de 1967;El Plan de Estabilización de Krieger Vasena;Devaluación del 40% con retenciones para financiar un ambicioso plan de obra pública.;"Bajo la dictadura de Onganía, el ministro Adalbert Krieger Vasena implementó un plan heterodoxo: devaluó el peso pero retuvo parte de la ganancia exportadora para el fisco, congeló salarios y bajó aranceles.
+43;PENDIENTE;NO;Lote Fundacional HDE;12 de marzo de 1967;El Plan de Estabilización de Krieger Vasena;Devaluación del 40% con retenciones para financiar un ambicioso plan de obra pública.;Ley 17.391 / Ministerio de Economía;Devaluación compensada con retenciones;"Bajo la dictadura de Onganía, el ministro Adalbert Krieger Vasena implementó un plan heterodoxo: devaluó el peso pero retuvo parte de la ganancia exportadora para el fisco, congeló salarios y bajó aranceles.
 
 Logró llevar la inflación al 7% anual en 1969 y atraer inversiones de capital, hasta que el estallido social del 'Cordobazo' puso fin a su gestión.
 
@@ -644,7 +644,7 @@ Logró llevar la inflación al 7% anual en 1969 y atraer inversiones de capital,
 Devaluación del 40% con retenciones para financiar un ambicioso plan de obra pública.
 
 #HistoriaEconomica #Argentina"
-44;PENDIENTE;24 de julio de 1959;'Hay que pasar el invierno' de Alsogaray;El ministro liberal aplicó un severo ajuste ortodoxo acordado con el FMI bajo Frondizi.;"En un mensaje por radio, el ministro Álvaro Alsogaray acuñó su célebre frase advirtiendo que la sociedad debía soportar meses de sacrificios salariales y tarifazos para sanear las cuentas públicas.
+44;PENDIENTE;NO;Lote Fundacional HDE;24 de julio de 1959;'Hay que pasar el invierno' de Alsogaray;El ministro liberal aplicó un severo ajuste ortodoxo acordado con el FMI bajo Frondizi.;Ministerio de Economía / BCRA;Emisión de Bonos del 9 de Julio para sueldos;"En un mensaje por radio, el ministro Álvaro Alsogaray acuñó su célebre frase advirtiendo que la sociedad debía soportar meses de sacrificios salariales y tarifazos para sanear las cuentas públicas.
 
 El plan incluyó eliminación de controles de precios, despido de empleados estatales y emisión de bonos de deuda interna para pagar sueldos atrasados.
 
@@ -659,7 +659,7 @@ El plan incluyó eliminación de controles de precios, despido de empleados esta
 El ministro liberal aplicó un severo ajuste ortodoxo acordado con el FMI bajo Frondizi.
 
 #HistoriaEconomica #Argentina"
-45;PENDIENTE;4 de noviembre de 1899;La Ley de Convertibilidad de Pellegrini;Fijó el valor del papel moneda en 44 centavos de peso oro mediante la Caja de Conversión.;"Tras la salida de la crisis de 1890, el presidente Julio A. Roca y su aliado Carlos Pellegrini sancionaron la Ley 3.871, que ató el papel moneda argentino al patrón oro internacional.
+45;PENDIENTE;NO;Lote Fundacional HDE;4 de noviembre de 1899;La Ley de Convertibilidad de Pellegrini;Fijó el valor del papel moneda en 44 centavos de peso oro mediante la Caja de Conversión.;Ley 2241 / Ley 3871 de 1899;Fijación del peso papel a 0,44 pesos oro;"Tras la salida de la crisis de 1890, el presidente Julio A. Roca y su aliado Carlos Pellegrini sancionaron la Ley 3.871, que ató el papel moneda argentino al patrón oro internacional.
 
 Este régimen monetario rígido garantizó una estabilidad cambiaria casi ininterrumpida durante las tres décadas de mayor crecimiento del modelo agroexportador.
 
@@ -674,7 +674,7 @@ Este régimen monetario rígido garantizó una estabilidad cambiaria casi ininte
 Fijó el valor del papel moneda en 44 centavos de peso oro mediante la Caja de Conversión.
 
 #HistoriaEconomica #Argentina"
-46;PENDIENTE;13 de febrero de 1946;La nacionalización del Banco Central;El BCRA dejó de ser un ente mixto y el Estado estatizó también los depósitos bancarios.;"Mediante el Decreto 8.503/46 impulsado por el Banco Central bajo la influencia de Miguel Miranda, se eliminó la participación privada en el directorio de la entidad monetaria.
+46;PENDIENTE;NO;Lote Fundacional HDE;13 de febrero de 1946;La nacionalización del Banco Central;El BCRA dejó de ser un ente mixto y el Estado estatizó también los depósitos bancarios.;Decreto-Ley 8503/46 / Banco Central;Estatización de acciones y garantía de depósitos;"Mediante el Decreto 8.503/46 impulsado por el Banco Central bajo la influencia de Miguel Miranda, se eliminó la participación privada en el directorio de la entidad monetaria.
 
 Además, se estatizaron los depósitos: los bancos operaban como mandatarios del BCRA, reorientando el crédito masivo hacia la industrialización por sustitución de importaciones.
 
@@ -689,7 +689,7 @@ Además, se estatizaron los depósitos: los bancos operaban como mandatarios del
 El BCRA dejó de ser un ente mixto y el Estado estatizó también los depósitos bancarios.
 
 #HistoriaEconomica #Argentina"
-47;PENDIENTE;1 de marzo de 1948;La compra estatal de los Ferrocarriles;Argentina pagó 150 millones de libras esterlinas a las compañías británicas propietarias.;"En un masivo acto popular en Retiro, Juan Domingo Perón formalizó la adquisición de las líneas férreas británicas utilizando saldos comerciales acumulados durante la Segunda Guerra Mundial.
+47;PENDIENTE;NO;Lote Fundacional HDE;1 de marzo de 1948;La compra estatal de los Ferrocarriles;Argentina pagó 150 millones de libras esterlinas a las compañías británicas propietarias.;Tratado Miranda-Eddy / Min. Obras Públicas;Pago de 150 millones de libras esterlinas;"En un masivo acto popular en Retiro, Juan Domingo Perón formalizó la adquisición de las líneas férreas británicas utilizando saldos comerciales acumulados durante la Segunda Guerra Mundial.
 
 La operación garantizó el control nacional de la red de transporte terrestre, aunque abrió debates sobre el precio pagado por material rodante desgastado.
 
@@ -704,7 +704,7 @@ La operación garantizó el control nacional de la red de transporte terrestre, 
 Argentina pagó 150 millones de libras esterlinas a las compañías británicas propietarias.
 
 #HistoriaEconomica #Argentina"
-48;PENDIENTE;18 de febrero de 1952;El Plan de Austeridad Económica de Perón;Tras la sequía y la crisis de divisas, se congelaron precios y se racionó el consumo de carne.;"El segundo mandato de Perón comenzó con un viraje económico: el Plan Económico de 1952 implementó austeridad fiscal, congelamiento de precios y salarios por dos años y un día sin carne por semana.
+48;PENDIENTE;NO;Lote Fundacional HDE;18 de febrero de 1952;El Plan de Austeridad Económica de Perón;Tras la sequía y la crisis de divisas, se congelaron precios y se racionó el consumo de carne.;Consejo Nacional Económico / Presidencia;Plan de emergencia y congelamiento de precios;"El segundo mandato de Perón comenzó con un viraje económico: el Plan Económico de 1952 implementó austeridad fiscal, congelamiento de precios y salarios por dos años y un día sin carne por semana.
 
 El plan logró frenar la inflación del 50% al 4% anual en 1954 y reorientó incentivos de inversión hacia el agro y la energía con la firma de contratos petroleros.
 
@@ -719,7 +719,7 @@ El plan logró frenar la inflación del 50% al 4% anual en 1954 y reorientó inc
 Tras la sequía y la crisis de divisas, se congelaron precios y se racionó el consumo de carne.
 
 #HistoriaEconomica #Argentina"
-49;PENDIENTE;24 de julio de 1958;La 'Batalla del Petróleo' de Frondizi;Se firmaron contratos con firmas extranjeras y en tres años se logró el autoabastecimiento.;"El presidente Arturo Frondizi anunció por cadena nacional la apertura al capital privado internacional para exploración y explotación de hidrocarburos a través de YPF.
+49;PENDIENTE;NO;Lote Fundacional HDE;24 de julio de 1958;La 'Batalla del Petróleo' de Frondizi;Se firmaron contratos con firmas extranjeras y en tres años se logró el autoabastecimiento.;Decreto 3683/58 / YPF;Contratos de locación de obra y producción en m3;"El presidente Arturo Frondizi anunció por cadena nacional la apertura al capital privado internacional para exploración y explotación de hidrocarburos a través de YPF.
 
 La producción de petróleo se triplicó en apenas 36 meses, eliminando la sangría de dólares por importación de combustibles, pese a la feroz oposición política de la época.
 
@@ -734,7 +734,7 @@ La producción de petróleo se triplicó en apenas 36 meses, eliminando la sangr
 Se firmaron contratos con firmas extranjeras y en tres años se logró el autoabastecimiento.
 
 #HistoriaEconomica #Argentina"
-50;PUBLICADO;21 de octubre de 1985;La creación de la tabla de Desagio del Austral;Un cálculo diario para restar la inflación pasada implícita en los contratos a plazo.;"Como parte del Plan Austral, el gobierno de Sourrouille creó la tabla de 'desagio' para descontar la inflación proyectada que los comerciantes y bancos ya habían cargado en los precios futuros.
+50;PUBLICADO;SI;Lote Fundacional HDE;21 de octubre de 1985;La creación de la tabla de Desagio del Austral;Un cálculo diario para restar la inflación pasada implícita en los contratos a plazo.;Decreto 1096/85 / Banco Central;Tabla de deducción de inflación implícita;"Como parte del Plan Austral, el gobierno de Sourrouille creó la tabla de 'desagio' para descontar la inflación proyectada que los comerciantes y bancos ya habían cargado en los precios futuros.
 
 El mecanismo evitó transferencias masivas de riqueza entre deudores y acreedores durante el congelamiento, convirtiéndose en una de las herramientas más ingeniosas de la historia económica.
 
@@ -749,7 +749,7 @@ El mecanismo evitó transferencias masivas de riqueza entre deudores y acreedore
 Un cálculo diario para restar la inflación pasada implícita en los contratos a plazo.
 
 #HistoriaEconomica #Argentina"
-51;PENDIENTE;10 de diciembre de 1999;El 'Impuestazo' de Machinea;Aumento del impuesto a las ganancias sobre la clase media para cerrar el déficit heredado.;"Apenas asumió el gobierno de la Alianza, el ministro José Luis Machinea impulsó la 'Tablita de Machinea', subiendo las alícuotas del impuesto a las ganancias y recortando deducciones a sueldos medios y altos.
+51;PENDIENTE;NO;Lote Fundacional HDE;10 de diciembre de 1999;El 'Impuestazo' de Machinea;Aumento del impuesto a las ganancias sobre la clase media para cerrar el déficit heredado.;Ley 25.239 / Reforma Tributaria 1999;Alícuotas y recorte de deducciones de Ganancias;"Apenas asumió el gobierno de la Alianza, el ministro José Luis Machinea impulsó la 'Tablita de Machinea', subiendo las alícuotas del impuesto a las ganancias y recortando deducciones a sueldos medios y altos.
 
 Lejos de sanear las cuentas, la medida deprimió el consumo interno y profundizó la recesión que desembocaría en la crisis terminal de 2001.
 

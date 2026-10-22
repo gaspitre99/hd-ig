@@ -1,9 +1,18 @@
+import sys
 import json
 import os
 import textwrap
 import time
 import csv
 from datetime import datetime, timezone, timedelta
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 try:
     import zoneinfo
 except ImportError:
@@ -188,6 +197,22 @@ def crear_placas_carrusel(post_o_fecha, titular=None, dato_clave=None, es_efemer
     for linea in textwrap.wrap(dato_clave, width=27):
         draw2.text((140, y_dato), linea, font=font_dato_grande, fill=blanco)
         y_dato += 66
+
+    # Sello de Fuente Oficial en el margen inferior de la tarjeta elevada grafito
+    fuente_oficial = post.get("fuente_oficial", "ARCHIVO HDE").upper()
+    tipo_valor = post.get("tipo_valor", "SERIE HISTÓRICA").upper()
+    texto_fuente = f"FUENTE: {fuente_oficial} • {tipo_valor}"
+    color_fuente = (148, 163, 184)  # Gris tenue / slate
+    font_fuente = obtener_fuente("sans", 22)
+
+    # Línea divisoria sutil previa a la fuente
+    y_fuente_sep = box_y + box_h - 90
+    draw2.line([(140, y_fuente_sep), (940, y_fuente_sep)], fill=borde_card, width=1)
+
+    y_fuente = y_fuente_sep + 20
+    for linea_f in textwrap.wrap(texto_fuente, width=54):
+        draw2.text((140, y_fuente), linea_f, font=font_fuente, fill=color_fuente)
+        y_fuente += 28
 
     draw2.text((90, 1100), f"EFEMÉRIDE: {fecha.upper()}", font=font_sub, fill=gris_tenue)
 
@@ -406,6 +431,8 @@ def parsear_dia_mes(fecha_str: str):
 
 def seleccionar_post_a_publicar(posts):
     """
+    Cerrojo de Seguridad (Gatekeeper):
+    Filtra estrictamente publicaciones NO publicadas Y VERIFICADAS.
     Prioriza coincidencia por efeméride del día (zona horaria Argentina); si no hay, usa fallback secuencial.
     Retorna una tupla: (post_seleccionado, es_efemeride_hoy)
     """
@@ -414,32 +441,48 @@ def seleccionar_post_a_publicar(posts):
     dia_hoy = ahora_ar.day
     mes_hoy = ahora_ar.month
 
-    # 1. Coincidencia por efeméride exacta de hoy (Prioridad 1)
-    for p in posts:
-        if not p.get("publicado"):
-            fecha_post = p.get("fecha_historica", "")
-            d, m = parsear_dia_mes(fecha_post)
-            if d == dia_hoy and m == mes_hoy:
-                print(f"¡Efeméride del día encontrada! Coincide con {dia_hoy}/{mes_hoy}: Post #{p.get('id')} - {p.get('titular')}")
-                return p, True
+    # Cerrojo de Seguridad: solo posts pendientes que hayan sido auditados (verificado == True)
+    posts_elegibles = [
+        p for p in posts 
+        if not p.get("publicado", False) and p.get("verificado", False) is True
+    ]
 
-    # 2. Fallback secuencial
-    siguiente = next((p for p in posts if not p.get("publicado")), None)
+    # Alerta preventiva si el inventario de publicaciones verificadas es crítico
+    if len(posts_elegibles) < 5:
+        print(f"⚠️ ALERTA DE AUDITORÍA: Quedan menos de 5 posts verificados listos para salir. (Disponibles: {len(posts_elegibles)})")
+
+    if not posts_elegibles:
+        print("⚠️ ALERTA DE BLOQUEO: No hay ningún post verificado disponible para publicar. Se suspende la publicación.")
+        return None, False
+
+    # 1. Coincidencia por efeméride exacta de hoy (Prioridad 1) sobre el lote verificado
+    for p in posts_elegibles:
+        fecha_post = p.get("fecha_historica", "")
+        d, m = parsear_dia_mes(fecha_post)
+        if d == dia_hoy and m == mes_hoy:
+            print(f"¡Efeméride del día encontrada y verificada! Coincide con {dia_hoy}/{mes_hoy}: Post #{p.get('id')} - {p.get('titular')}")
+            return p, True
+
+    # 2. Fallback secuencial sobre el lote verificado
+    siguiente = posts_elegibles[0]
     return siguiente, False
 
 def actualizar_csv(posts, ruta_csv="control_publicaciones.csv"):
     """Regenera la planilla de control de auditoría para Excel tras cada ejecución."""
     with open(ruta_csv, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f, delimiter=";")
-        writer.writerow(["ID", "ESTADO", "FECHA HISTÓRICA", "TITULAR", "DATO CLAVE", "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"])
+        writer.writerow(["ID", "ESTADO", "VERIFICADO", "FECHA HISTÓRICA", "TITULAR", "DATO CLAVE", "FUENTE OFICIAL", "TIPO DE VALOR", "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"])
         for p in posts:
             fecha = p.get("fecha_historica", "")
             titular = p.get("titular", "")
             dato = p.get("dato_clave", "")
             caption_ig = p.get("caption", "")
+            fuente = p.get("fuente_oficial", "")
+            tipo_val = p.get("tipo_valor", "")
             texto_x = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n{dato}\n\n#HistoriaEconomica #Argentina"
             estado = "PUBLICADO" if p.get("publicado") else "PENDIENTE"
-            writer.writerow([p.get("id"), estado, fecha, titular, dato, caption_ig, texto_x])
+            verificado = "SI" if p.get("verificado") else "NO"
+            writer.writerow([p.get("id"), estado, verificado, fecha, titular, dato, fuente, tipo_val, caption_ig, texto_x])
     print(f"Planilla de control ({ruta_csv}) sincronizada automáticamente.")
 
 # Alias para compatibilidad histórica
@@ -451,7 +494,7 @@ def main():
 
     post_pendiente, es_efemeride_hoy = seleccionar_post_a_publicar(posts)
     if not post_pendiente:
-        print("No hay publicaciones pendientes en datos.json.")
+        print("No hay publicaciones verificadas pendientes en datos.json. Publicación detenida por seguridad.")
         return
 
     print(f"Generando carrusel para el post #{post_pendiente.get('id')}: {post_pendiente.get('titular')}...")
