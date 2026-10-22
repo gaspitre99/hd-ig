@@ -4,8 +4,62 @@ import textwrap
 import time
 import csv
 from datetime import datetime, timezone, timedelta
+try:
+    import zoneinfo
+except ImportError:
+    zoneinfo = None
 import requests
 from PIL import Image, ImageDraw, ImageFont
+
+def obtener_zona_argentina():
+    """Retorna la zona horaria oficial de Argentina (America/Argentina/Buenos_Aires)."""
+    if zoneinfo is not None:
+        try:
+            return zoneinfo.ZoneInfo("America/Argentina/Buenos_Aires")
+        except Exception:
+            pass
+    return timezone(timedelta(hours=-3))
+
+def obtener_paleta_editorial(post, es_efemeride_hoy=False):
+    """
+    Determina la paleta cromática y la etiqueta de portada según la jerarquía editorial:
+    1. Modo Efeméride (Prioridad 1): es_efemeride_hoy o post['es_efemeride'] == True -> Dorado / Ámbar (245, 158, 11)
+    2. Modo Fin de Semana (Prioridad 2): Sábado (5) o Domingo (6) -> Verde Esmeralda (16, 185, 129)
+    3. Modo Estándar Lunes a Viernes (Por defecto) -> Celeste Eléctrico HDE (14, 165, 233)
+    """
+    tz_ar = obtener_zona_argentina()
+    ahora_ar = datetime.now(tz_ar)
+    fecha_hist = post.get("fecha_historica", "") if isinstance(post, dict) else str(post)
+
+    # 1. Modo Efeméride (Prioridad 1)
+    if es_efemeride_hoy or (isinstance(post, dict) and post.get("es_efemeride")):
+        return {
+            "tipo": "efemeride",
+            "color_acento": (245, 158, 11),       # Dorado / Ámbar
+            "color_tarjeta": (28, 24, 18),        # Grafito cálido
+            "borde_tarjeta": (70, 52, 28),        # Borde sutil cálido
+            "etiqueta_portada": f"EFEMÉRIDE • TAL DÍA COMO HOY ({fecha_hist.upper()})"
+        }
+
+    # 2. Modo Edición Fin de Semana (Prioridad 2)
+    if ahora_ar.weekday() in (5, 6):
+        return {
+            "tipo": "fin_de_semana",
+            "color_acento": (16, 185, 129),       # Verde Esmeralda editorial
+            "color_tarjeta": (18, 28, 24),        # Grafito verdoso sutil
+            "borde_tarjeta": (36, 62, 50),        # Borde sutil esmeralda
+            "etiqueta_portada": f"DEBATE • EDICIÓN DE FIN DE SEMANA • {fecha_hist.upper()}"
+        }
+
+    # 3. Modo Estándar Lunes a Viernes (Por defecto)
+    categoria = post.get("categoria", "HISTORIA MONETARIA").upper() if isinstance(post, dict) else "HISTORIA MONETARIA"
+    return {
+        "tipo": "estandar",
+        "color_acento": (14, 165, 233),           # Celeste Eléctrico HDE
+        "color_tarjeta": (20, 24, 32),            # Grafito azulado
+        "borde_tarjeta": (45, 55, 72),            # Borde sutil azulado
+        "etiqueta_portada": f"{categoria} • {fecha_hist.upper()}"
+    }
 
 def limpiar_secreto(val: str) -> str:
     s = val.strip().strip("\"'").strip()
@@ -41,14 +95,28 @@ def obtener_fuente(tipo="sans", tamano=40):
                 pass
     return ImageFont.load_default()
 
-def crear_placas_carrusel(fecha, titular, dato_clave):
+def crear_placas_carrusel(post_o_fecha, titular=None, dato_clave=None, es_efemeride_hoy=False, prefijo_archivo="slide"):
+    if isinstance(post_o_fecha, dict):
+        post = post_o_fecha
+        fecha = post.get("fecha_historica", "")
+        titular = post.get("titular", "")
+        dato_clave = post.get("dato_clave", "")
+    else:
+        fecha = str(post_o_fecha)
+        titular = str(titular or "")
+        dato_clave = str(dato_clave or "")
+        post = {"fecha_historica": fecha, "titular": titular, "dato_clave": dato_clave}
+
+    paleta = obtener_paleta_editorial(post, es_efemeride_hoy=es_efemeride_hoy)
+    color_acento = paleta["color_acento"]
+    color_tarjeta = paleta["color_tarjeta"]
+    borde_card = paleta["borde_tarjeta"]
+    etiqueta_portada = paleta["etiqueta_portada"]
+
     ancho, alto = 1080, 1350
     fondo_color = (12, 14, 18)        # Negro grafito idéntico a la web
-    celeste_brand = (14, 165, 233)     # Cyan / Celeste HDE
     blanco = (255, 255, 255)           # Blanco puro
     gris_sub = (203, 213, 225)         # Gris slate
-    gris_card = (20, 24, 32)           # Fondo tarjeta
-    borde_card = (45, 55, 72)          # Borde sutil
     gris_tenue = (120, 130, 145)
 
     font_brand = obtener_fuente("sans_bold", 22)
@@ -67,14 +135,14 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw1 = ImageDraw.Draw(img1)
 
     # Identidad editorial armónica superior (✦ HABLEMOS DE ECONOMÍA)
-    draw1.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw1.text((90, 85), "✦", font=font_tag, fill=color_acento)
     draw1.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     # Indicador de progreso (1/3)
     draw1.text((940, 88), "1/3", font=font_sub, fill=gris_tenue)
 
     # Tag de categoría y fecha
-    draw1.text((90, 190), f"HISTORIA MONETARIA  •  {fecha.upper()}", font=font_tag, fill=celeste_brand)
+    draw1.text((90, 190), etiqueta_portada, font=font_tag, fill=color_acento)
 
     y_text = 270
     for linea in textwrap.wrap(titular, width=21):
@@ -85,13 +153,13 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw1.line([(90, y_text), (990, y_text)], fill=borde_card, width=2)
     y_text += 50
 
-    draw1.text((90, y_text), "ARCHIVO & ANÁLISIS MACROECONÓMICO", font=font_tag, fill=celeste_brand)
+    draw1.text((90, y_text), "ARCHIVO & ANÁLISIS MACROECONÓMICO", font=font_tag, fill=color_acento)
 
     # Footer
-    draw1.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
-    draw1.text((120, 1222), "DESLIZÁ PARA CONOCER EL DATO CLAVE ➔", font=font_sub, fill=celeste_brand)
+    draw1.rectangle([(90, 1200), (990, 1270)], fill=color_tarjeta, outline=borde_card, width=1)
+    draw1.text((120, 1222), "DESLIZÁ PARA CONOCER EL DATO CLAVE ➔", font=font_sub, fill=color_acento)
 
-    ruta_s1 = "slide_1_portada.jpg"
+    ruta_s1 = f"{prefijo_archivo}_1_portada.jpg"
     img1.save(ruta_s1, quality=95)
     rutas_salida.append(ruta_s1)
 
@@ -102,19 +170,19 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw2 = ImageDraw.Draw(img2)
 
     # Identidad editorial superior
-    draw2.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw2.text((90, 85), "✦", font=font_tag, fill=color_acento)
     draw2.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     # Indicador de progreso (2/3)
     draw2.text((940, 88), "2/3", font=font_sub, fill=gris_tenue)
 
-    draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=celeste_brand)
+    draw2.text((90, 190), "HISTORIA ECONÓMICA  •  EL DATO CLAVE", font=font_tag, fill=color_acento)
 
     # Caja destacada para el dato clave
     box_y = 270
     box_h = 720
-    draw2.rectangle([(90, box_y), (990, box_y + box_h)], fill=gris_card, outline=borde_card, width=2)
-    draw2.rectangle([(90, box_y), (105, box_y + box_h)], fill=celeste_brand)
+    draw2.rectangle([(90, box_y), (990, box_y + box_h)], fill=color_tarjeta, outline=borde_card, width=2)
+    draw2.rectangle([(90, box_y), (105, box_y + box_h)], fill=color_acento)
 
     y_dato = box_y + 80
     for linea in textwrap.wrap(dato_clave, width=27):
@@ -123,10 +191,10 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
 
     draw2.text((90, 1100), f"EFEMÉRIDE: {fecha.upper()}", font=font_sub, fill=gris_tenue)
 
-    draw2.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
-    draw2.text((120, 1222), "DESLIZÁ PARA EL ANÁLISIS COMPLETO ➔", font=font_sub, fill=celeste_brand)
+    draw2.rectangle([(90, 1200), (990, 1270)], fill=color_tarjeta, outline=borde_card, width=1)
+    draw2.text((120, 1222), "DESLIZÁ PARA EL ANÁLISIS COMPLETO ➔", font=font_sub, fill=color_acento)
 
-    ruta_s2 = "slide_2_dato.jpg"
+    ruta_s2 = f"{prefijo_archivo}_2_dato.jpg"
     img2.save(ruta_s2, quality=95)
     rutas_salida.append(ruta_s2)
 
@@ -137,13 +205,13 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     draw3 = ImageDraw.Draw(img3)
 
     # Identidad editorial superior
-    draw3.text((90, 85), "✦", font=font_tag, fill=celeste_brand)
+    draw3.text((90, 85), "✦", font=font_tag, fill=color_acento)
     draw3.text((125, 88), "HABLEMOS DE ECONOMÍA", font=font_brand, fill=blanco)
 
     # Indicador de progreso (3/3)
     draw3.text((940, 88), "3/3", font=font_sub, fill=gris_tenue)
 
-    draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=celeste_brand)
+    draw3.text((90, 190), "DEBATE & COMUNIDAD", font=font_tag, fill=color_acento)
 
     y_preg = 260
     for linea in textwrap.wrap("¿Qué opinás de esta medida?", width=20):
@@ -158,9 +226,9 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
     # Tarjeta de YouTube
     yt_y = y_coment + 40
     yt_h = 470
-    draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=gris_card, outline=celeste_brand, width=2)
+    draw3.rectangle([(90, yt_y), (990, yt_y + yt_h)], fill=color_tarjeta, outline=color_acento, width=2)
 
-    draw3.text((130, yt_y + 45), "CANAL OFICIAL DE YOUTUBE", font=font_tag, fill=celeste_brand)
+    draw3.text((130, yt_y + 45), "CANAL OFICIAL DE YOUTUBE", font=font_tag, fill=color_acento)
     draw3.text((130, yt_y + 105), "@hablemosdeeco", font=font_titular, fill=blanco)
 
     y_desc = yt_y + 195
@@ -170,13 +238,13 @@ def crear_placas_carrusel(fecha, titular, dato_clave):
         y_desc += 50
 
     # Botón simulación
-    draw3.rectangle([(130, yt_y + 360), (620, yt_y + 425)], fill=celeste_brand)
+    draw3.rectangle([(130, yt_y + 360), (620, yt_y + 425)], fill=color_acento)
     draw3.text((155, yt_y + 380), "ENLACE DIRECTO EN EL PERFIL", font=font_sub, fill=fondo_color)
 
-    draw3.rectangle([(90, 1200), (990, 1270)], fill=gris_card, outline=borde_card, width=1)
+    draw3.rectangle([(90, 1200), (990, 1270)], fill=color_tarjeta, outline=borde_card, width=1)
     draw3.text((120, 1222), "SEGUINOS EN INSTAGRAM: @hablemosdeeco", font=font_sub, fill=gris_tenue)
 
-    ruta_s3 = "slide_3_cierre.jpg"
+    ruta_s3 = f"{prefijo_archivo}_3_cierre.jpg"
     img3.save(ruta_s3, quality=95)
     rutas_salida.append(ruta_s3)
 
@@ -319,31 +387,47 @@ def publicar_en_x(fecha, titular, dato_clave):
         print(f"Advertencia al publicar en X: {e}")
         return None
 
+def parsear_dia_mes(fecha_str: str):
+    """Extrae (dia, mes) numéricos de fechas en español como '14 de junio de 1985' o '4 de junio'."""
+    if not fecha_str:
+        return None, None
+    meses_map = {
+        "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
+        "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
+    }
+    partes = fecha_str.lower().replace(",", "").split()
+    dia, mes = None, None
+    for p in partes:
+        if p.isdigit() and dia is None:
+            dia = int(p)
+        if p in meses_map and mes is None:
+            mes = meses_map[p]
+    return dia, mes
+
 def seleccionar_post_a_publicar(posts):
-    """Prioriza coincidencia por efeméride del día (UTC-3 Argentina); si no hay, usa fallback secuencial."""
-    tz_ar = timezone(timedelta(hours=-3))
+    """
+    Prioriza coincidencia por efeméride del día (zona horaria Argentina); si no hay, usa fallback secuencial.
+    Retorna una tupla: (post_seleccionado, es_efemeride_hoy)
+    """
+    tz_ar = obtener_zona_argentina()
     ahora_ar = datetime.now(tz_ar)
+    dia_hoy = ahora_ar.day
+    mes_hoy = ahora_ar.month
 
-    meses_es = [
-        "enero", "febrero", "marzo", "abril", "mayo", "junio",
-        "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-    ]
-    dia_str = str(ahora_ar.day)
-    mes_str = meses_es[ahora_ar.month - 1]
-    patron_hoy = f"{dia_str} de {mes_str}".lower()
-
-    # 1. Coincidencia por efeméride exacta de hoy
+    # 1. Coincidencia por efeméride exacta de hoy (Prioridad 1)
     for p in posts:
         if not p.get("publicado"):
-            fecha_post = p.get("fecha_historica", "").lower()
-            if patron_hoy in fecha_post:
-                print(f"¡Efeméride del día encontrada! Coincide con '{patron_hoy}': Post #{p.get('id')}")
-                return p
+            fecha_post = p.get("fecha_historica", "")
+            d, m = parsear_dia_mes(fecha_post)
+            if d == dia_hoy and m == mes_hoy:
+                print(f"¡Efeméride del día encontrada! Coincide con {dia_hoy}/{mes_hoy}: Post #{p.get('id')} - {p.get('titular')}")
+                return p, True
 
     # 2. Fallback secuencial
-    return next((p for p in posts if not p.get("publicado")), None)
+    siguiente = next((p for p in posts if not p.get("publicado")), None)
+    return siguiente, False
 
-def actualizar_csv_control(posts, ruta_csv="control_publicaciones.csv"):
+def actualizar_csv(posts, ruta_csv="control_publicaciones.csv"):
     """Regenera la planilla de control de auditoría para Excel tras cada ejecución."""
     with open(ruta_csv, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f, delimiter=";")
@@ -358,21 +442,20 @@ def actualizar_csv_control(posts, ruta_csv="control_publicaciones.csv"):
             writer.writerow([p.get("id"), estado, fecha, titular, dato, caption_ig, texto_x])
     print(f"Planilla de control ({ruta_csv}) sincronizada automáticamente.")
 
+# Alias para compatibilidad histórica
+actualizar_csv_control = actualizar_csv
+
 def main():
     with open("datos.json", "r", encoding="utf-8") as f:
         posts = json.load(f)
 
-    post_pendiente = seleccionar_post_a_publicar(posts)
+    post_pendiente, es_efemeride_hoy = seleccionar_post_a_publicar(posts)
     if not post_pendiente:
         print("No hay publicaciones pendientes en datos.json.")
         return
 
     print(f"Generando carrusel para el post #{post_pendiente.get('id')}: {post_pendiente.get('titular')}...")
-    rutas_placas = crear_placas_carrusel(
-        post_pendiente["fecha_historica"],
-        post_pendiente["titular"],
-        post_pendiente["dato_clave"]
-    )
+    rutas_placas = crear_placas_carrusel(post_pendiente, es_efemeride_hoy=es_efemeride_hoy)
 
     try:
         ig_post_id = publicar_carrusel_en_instagram(rutas_placas, post_pendiente["caption"])
@@ -381,11 +464,14 @@ def main():
         print(f"Error publicando en Instagram: {e}")
         raise e
 
+    # Publicación en X desactivada deliberadamente (el bot opera exclusivamente para Instagram sin advertencias)
+    # x_tweet_id = publicar_en_x(post_pendiente["fecha_historica"], post_pendiente["titular"], post_pendiente["dato_clave"])
+
     post_pendiente["publicado"] = True
     with open("datos.json", "w", encoding="utf-8") as f:
         json.dump(posts, f, ensure_ascii=False, indent=2)
 
-    actualizar_csv_control(posts)
+    actualizar_csv(posts)
 
 if __name__ == "__main__":
     main()
