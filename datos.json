@@ -978,7 +978,7 @@
     "origen_guion": "Guion: Lo_Que_No_Te_Conto_La_Serie_De_Menem_Economia_90s.txt",
     "verificado_fuente_nota": "Verificado en web: muerte de Roig 14/07/1989, Ley 23.696 (17/08/1989), traspaso ENTel 08/11/1990 y Aerolíneas nov 1990 (Ámbito), y total USD 33.000-39.600 M (Clarín).",
     "es_efemeride": true,
-    "publicado": false,
+    "publicado": true,
     "verificado": true,
     "estado_auditoria_ia": "VERIFICADO_V2",
     "id": 200,
