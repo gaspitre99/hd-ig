@@ -128,6 +128,9 @@ COLUMNAS_EXCEL = [
     ("ESTADO_AUDITORIA_IA", 22, "center"),
     ("PROBLEMA_DETECTADO", 35, "left"),
     ("ARREGLO_SUGERIDO", 35, "left"),
+    ("CIFRA_HERO", 20, "center"),
+    ("PALABRA_CLAVE", 18, "center"),
+    ("URL_RESPALDO", 55, "left"),
 ]
 
 def actualizar_csv_audit(posts, ruta_csv=CSV_PATH):
@@ -136,25 +139,28 @@ def actualizar_csv_audit(posts, ruta_csv=CSV_PATH):
         writer = csv.writer(f, delimiter=";")
         writer.writerow([
             "ID", "ESTADO", "VERIFICADO", "CONTROL_ANONIMATO", "ORIGEN_GUION", "FECHA HISTÓRICA",
-            "TITULAR", "DATO CLAVE", "FUENTE OFICIAL", "TIPO DE VALOR",
-            "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"
+            "TITULAR", "CIFRA HERO", "DATO CLAVE", "FUENTE OFICIAL", "TIPO DE VALOR",
+            "PALABRA CLAVE", "URL RESPALDO", "TEXTO FINAL INSTAGRAM", "TEXTO FINAL X (TWITTER)"
         ])
         for p in posts:
             es_limpio, _ = verificar_anonimato(p)
             val_anon = "LIMPIO" if es_limpio else "⚠️ ALERTA IDENTIDAD"
             fecha = sanitizar_identidad(p.get("fecha_historica", ""))
             titular = sanitizar_identidad(p.get("titular", ""))
+            cifra_hero = sanitizar_identidad(p.get("cifra_hero", ""))
             dato = sanitizar_identidad(p.get("dato_clave", ""))
             caption_ig = sanitizar_identidad(p.get("caption", ""))
             fuente = sanitizar_identidad(p.get("fuente_oficial", ""))
             tipo_val = sanitizar_identidad(p.get("tipo_valor", ""))
             origen = sanitizar_identidad(p.get("origen_guion", "Lote Fundacional HDE"))
+            kw = sanitizar_identidad(p.get("palabra_clave", ""))
+            url_resp = p.get("url_respaldo", "")
             texto_x = f"🏛️ {fecha.upper()}\n\n📌 {titular}\n\n{dato}\n\n#HistoriaEconomica #Argentina"
             estado = "PUBLICADO" if p.get("publicado") else "PENDIENTE"
             verificado = "SI" if (p.get("verificado") and es_limpio) else "NO"
             writer.writerow([
                 p.get("id"), estado, verificado, val_anon, origen, fecha,
-                titular, dato, fuente, tipo_val, caption_ig, texto_x
+                titular, cifra_hero, dato, fuente, tipo_val, kw, url_resp, caption_ig, texto_x
             ])
     print(f"Planilla CSV de auditoría ({ruta_csv}) sincronizada.")
 
@@ -259,7 +265,10 @@ def exportar_excel():
             caption,
             estado_ia,
             problema,
-            arreglo
+            arreglo,
+            sanitizar_identidad(p.get("cifra_hero", "")),
+            sanitizar_identidad(p.get("palabra_clave", "")),
+            p.get("url_respaldo", ""),
         ]
 
         ws.row_dimensions[row_idx].height = 22
